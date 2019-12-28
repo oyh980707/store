@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.loveoyh.store.mapper.UserMapper">
+
+	<!-- 插入用户数据 -->
+	<!-- Integer insert(User user) -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="uid">
+		INSERT INTO o_user (
+			username, 
+			password,
+			salt, 
+			gender,
+			phone, 
+			email,
+			avatar, 
+			is_delete,
+			created_user, 
+			created_time,
+			modified_user, 
+			modified_time
+		) VALUES (
+			#{username}, 
+			#{password},
+			#{salt}, 
+			#{gender},
+			#{phone}, 
+			#{email},
+			#{avatar}, 
+			#{isDelete},
+			#{createdUser}, 
+			#{createdTime},
+			#{modifiedUser}, 
+			#{modifiedTime}
+		)
+	</insert>
+	
+	<!-- 根据用户名查询用户数据 -->
+	<!-- User findByUsername(String username) -->
+	<select id="findByUsername" resultType="com.loveoyh.store.entity.User">
+		SELECT 
+			uid,
+			username,
+			password,
+			salt,
+			is_delete as isDelete
+		FROM 
+			o_user 
+		WHERE 
+			username=#{username}
+	</select>
+	
+	<!-- 更新用户密码 -->
+	<!-- Integer updatePassword(@Param("uid") Integer uid, @Param("password") String password,@Param("modifiedUser") String modifiedUser,@Param("modifiedTime") Date modifiedTime) -->
+	<update id="updatePassword">
+		UPDATE o_user SET 
+			password=#{password}, 
+			modified_user=#{modifiedUser}, 
+			modified_time=#{modifiedTime}
+		WHERE 
+			uid=#{uid}
+	</update>
+	
+	<!-- 更新用户信息 -->
+	<!-- Integer updateInfo(User user) -->
+	<update id="updateInfo">
+		UPDATE 
+			o_user 
+		SET 
+			<if test="phone != null">
+			phone=#{phone}, 
+			</if>
+			<if test="email != null">
+			email=#{email}, 
+			</if>
+			<if test="gender != null">
+			gender=#{gender}, 
+			</if>
+			modified_user=#{modifiedUser}, 
+			modified_time=#{modifiedTime}
+		WHERE 
+			uid=#{uid}
+	</update>
+	
+	<!-- 通过用户id查找用户 -->
+	<!-- User findByUid(Integer uid) -->
+	<select id="findByUid" resultType="com.loveoyh.store.entity.User">
+		SELECT
+			username,
+			password, 
+			salt,
+			phone,
+			email,
+			gender,
+			is_delete as isDelete
+		FROM
+			o_user 
+		WHERE
+			uid=#{uid}
+	</select>
+	
+	
+	
+</mapper>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--edge浏览器H5兼容设置-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--360浏览器H5兼容设置-->
+		<meta name="renderer" content="webkit" />
+		<title>学子商城</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--导入核心文件-->
+		<script src="../bootstrap3/js/holder.js"></script>
+		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="../bootstrap3/jquery-1.9.1.min.js"></script>
+		<script src="../bootstrap3/js/bootstrap.js"></script>
+		<!-- 字体图标 -->
+		<link rel="stylesheet" href="../bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+	</head>
+	<body>
+		<!--左侧导航开始-->
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<!--主选项：我的订单-->
+					<p class="panel-title">
+                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">我的订单</a>
+            			</p>
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div><a href="orders.html">全部订单</a></div>
+						<div><a href="orders.html">待付款</a></div>
+						<div><a href="orders.html">待收货</a></div>
+						<div><a href="orders.html">待评价</a></div>
+						<div><a href="orders.html">退货退款</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<!--主选项：资料修改-->
+					<p class="panel-title">
+               			<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">资料修改</a>
+            		</p>
+				</div>
+				<div id="collapseTwo" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div><a href="password.html">修改密码</a></div>
+						<div><a href="userdata.html">个人资料</a></div>
+						<div><a href="upload.html">上传头像</a></div>
+						<div><a href="address.html">收货管理</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--左侧导航结束-->
+	</body>
+</html>

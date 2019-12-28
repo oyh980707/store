@@ -1,0 +1,37 @@
+package com.loveoyh.store.conf;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.loveoyh.store.interceptor.LoginInterceptor;
+
+/**
+ * 登录拦截器的配置类
+ */
+@Configuration
+public class LoginInterceptorConfigurer implements WebMvcConfigurer {
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// 创建拦截器对象
+		HandlerInterceptor interceptor = new LoginInterceptor();
+		
+		List<String> excludePaths = new ArrayList<String>();
+		excludePaths.add("/web/login.html");
+		excludePaths.add("/web/register.html");
+		excludePaths.add("/users/login");
+		excludePaths.add("/users/reg");
+		excludePaths.add("/bootstrap3/**");
+		excludePaths.add("/css/**");
+		excludePaths.add("/images/**");
+		excludePaths.add("/js/**");
+		
+		registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
+	}
+	
+}
