@@ -156,6 +156,11 @@
 					"success":function(data){
 						if(data.state == 0){
 							alert("登录成功！");
+							console.log(data)
+							//将相关的数据保存到Cookie中
+							$.cookie("avatar", data.data.avatar , {
+								expires: 7
+							});
 							//跳转页面
 						} else {
 							alert(data.message);

@@ -13,6 +13,7 @@
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<script src="../bootstrap3/jquery-1.9.1.min.js"></script>
+		<script src="../bootstrap3/js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../bootstrap3/js/bootstrap.js"></script>
 		<!-- 字体图标 -->
 		<link rel="stylesheet" href="../bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
@@ -137,20 +138,20 @@
 					</ul>
 					<div class="panel-body">
 						<!--上传头像表单开始-->
-						<form class="form-horizontal" role="form">
+						<form id="form-change-avatar" class="form-horizontal" role="form">
 							<div class="form-group">
 								<label class="col-md-2 control-label">选择头像:</label>
-								<div class="col-md-1">
-									<img src="../images/index/user.jpg" class="img-responsive" />
+								<div class="col-md-2">
+									<img id="img-avatar" src="../images/index/user.jpg" class="img-responsive" />
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-offset-2 col-md-4">
-									<input type="file">
+									<input type="file" name="file">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
-									<input type="button" class="btn btn-primary" value="上传" />
+									<input id="btn-change-avatar" type="button" class="btn btn-primary" value="上传" />
 								</div>
 							</div>
 						</form>
@@ -244,5 +245,43 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//读取头像并显示
+			console.log($.cookie("avatar") );
+			if($.cookie("avatar") != null){
+				$("#img-avatar").attr("src",$.cookie("avatar"));
+			}
+			//修改头像请求
+			$("#btn-change-avatar").click(function(){
+				$.ajax({
+					"url":"/users/change_avatar",
+					"data":new FormData($("#form-change-avatar")[0]),
+					"type":"post",
+					"dataType":"json",
+					"contentType":false,
+					"processData":false,
+					"success":function(data){
+						if(data.state == 0){
+							alert("修改成功！",data.data);
+							$("#img-avatar").attr("src",data.data);
+							$.cookie("avatar", data.data , {
+								expires: 7
+							});
+						} else {
+							alert(data.message);
+						}
+					},
+					"error":function(){
+						/*
+							所有非2开头的状态码会走到这里，所以程序可以尽量避免4,5开头的
+							状态码，3开头的重定向将会在这里跳转
+						*/
+						alert("您的登录信息已经过期！请重新登录！");
+						//location.href = "/web/login.html";
+					}
+				});
+			});
+		});
+	</script>
 </html>

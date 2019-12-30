@@ -4,6 +4,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.loveoyh.store.controller.ex.ControllerException;
+import com.loveoyh.store.controller.ex.FileEmptyException;
+import com.loveoyh.store.controller.ex.FileSizeException;
+import com.loveoyh.store.controller.ex.FileTypeException;
+import com.loveoyh.store.controller.ex.FileUploadException;
+import com.loveoyh.store.controller.ex.FileUploadIOException;
+import com.loveoyh.store.controller.ex.FileUploadStateException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.PasswordNotMatchException;
 import com.loveoyh.store.service.ex.ServiceException;
@@ -21,7 +28,7 @@ public abstract class BaseController {
 	 */
 	protected static final Integer SUCCESS = 0;
 	
-	@ExceptionHandler(ServiceException.class)
+	@ExceptionHandler({ServiceException.class,ControllerException.class})
 	public JsonResult<Void> handlerException(Throwable e){
 		JsonResult<Void> jr = new JsonResult<Void>(e.getMessage());
 		if(e instanceof UsernameDuplicateException) {
@@ -39,6 +46,21 @@ public abstract class BaseController {
 		}else if(e instanceof UpdateException){
 			//5001-数据更新异常
 			jr.setState(5001);
+		}else if(e instanceof FileEmptyException) {
+			//6000-文件为空异常类，例如没有选择文件或选择的文件为0字节的
+			jr.setState(6000);
+		}else if(e instanceof FileSizeException) {
+			//6001-文件过大异常类，例如上传的文件大小超过规定的大小
+			jr.setState(6001);
+		}else if(e instanceof FileTypeException) {
+			//6002-文件类型错误异常类，例如文件类型超出规定类型
+			jr.setState(6002);
+		}else if(e instanceof FileUploadIOException) {
+			//6003-文件上传IO异常，例如：上传文件的读写问题
+			jr.setState(6003);
+		}else if(e instanceof FileUploadStateException) {
+			//6004-文件上传状态异常类，例如：上传过程中源文件被移除，导致源文件找不到
+			jr.setState(6004);
 		}
 		return jr;
 	}
