@@ -58,6 +58,14 @@ public interface UserService {
 	 */
 	public void changeInfo(User user) throws UserNotFoundException,UpdateException;
 	
-	
+	/**
+	 * 修改头像
+	 * @param uid 用户的id
+	 * @param username 用户名
+	 * @param avatar 头像的路径
+	 * @throws UserNotFoundException 用户数据不存在，或者已经被标记为删除
+	 * @throws UpdateException 更新数据失败
+	 */
+	public void changeAvatar(Integer uid, String username, String avatar) throws UserNotFoundException, UpdateException;
 	
 }

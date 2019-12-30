@@ -36,21 +36,6 @@
 		)
 	</insert>
 	
-	<!-- 根据用户名查询用户数据 -->
-	<!-- User findByUsername(String username) -->
-	<select id="findByUsername" resultType="com.loveoyh.store.entity.User">
-		SELECT 
-			uid,
-			username,
-			password,
-			salt,
-			is_delete as isDelete
-		FROM 
-			o_user 
-		WHERE 
-			username=#{username}
-	</select>
-	
 	<!-- 更新用户密码 -->
 	<!-- Integer updatePassword(@Param("uid") Integer uid, @Param("password") String password,@Param("modifiedUser") String modifiedUser,@Param("modifiedTime") Date modifiedTime) -->
 	<update id="updatePassword">
@@ -82,6 +67,33 @@
 		WHERE 
 			uid=#{uid}
 	</update>
+	
+	<!-- 更新用户头像 -->
+	<!-- updateAvatar(@Param("uid") Integer uid, @Param("avatar") String avatar,@Param("modifiedUser") String modifiedUser,@Param("modifiedTime") Date modifiedTime) -->
+	<update id="updateAvatar">
+		UPDATE o_user SET 
+			avatar=#{avatar}, 
+			modified_user=#{modifiedUser}, 
+			modified_time=#{modifiedTime}
+		WHERE 
+			uid=#{uid}
+	</update>
+	
+	<!-- 根据用户名查询用户数据 -->
+	<!-- User findByUsername(String username) -->
+	<select id="findByUsername" resultType="com.loveoyh.store.entity.User">
+		SELECT 
+			uid,
+			username,
+			password,
+			salt,
+			avatar,
+			is_delete as isDelete
+		FROM 
+			o_user 
+		WHERE 
+			username=#{username}
+	</select>
 	
 	<!-- 通过用户id查找用户 -->
 	<!-- User findByUid(Integer uid) -->

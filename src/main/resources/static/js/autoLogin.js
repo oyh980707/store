@@ -5,7 +5,7 @@ $(function() {
 			if (!$("#auto").prop("checked")) {
 				//清空cookie中的内容
 				$.cookie("isAutoLogin", "false", {
-					expire: -1
+					expires: -1
 				});
 				$.cookie("username", "", {
 					expires: -1

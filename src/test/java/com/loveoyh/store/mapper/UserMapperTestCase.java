@@ -64,6 +64,19 @@ public class UserMapperTestCase {
 		Integer n = mapper.updateInfo(user);
 		System.err.println(n);
 	}
+	
+	/**
+	 * 测试更新用户头像
+	 */
+	@Test
+	public void testUpdateAvatar() {
+		Integer uid = 1;
+		String avatar = "/usr/local/java/user.jpg";
+		String modifiedUser = "root";
+		Date modifiedTime = new Date();
+		Integer n = mapper.updateAvatar(uid, avatar, modifiedUser, modifiedTime);
+		System.err.println(n);
+	}
 
 	/**
 	 * 测试通过用户名查找用户

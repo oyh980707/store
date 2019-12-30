@@ -181,6 +181,35 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	/**
+	 * 更新用户头像流程
+	 * 1.根据参数uid查询用户数据并判断查询结果是否为null
+	 * 	如果为null则抛出：UserNotFoundException
+	 * 2.判断查询结果中的isDelete为1
+	 * 	如果是1则抛出：UserNotFoundException
+	 * 3.创建当前时间对象
+	 * 4.执行更新头像，并获取返回的受影响的行数并判断受影响的行数是否不为1
+	 * 	若为1则抛出：UpdateException
+	 */
+	@Override
+	public void changeAvatar(Integer uid, String username, String avatar) throws UserNotFoundException, UpdateException {
+		User user = userMapper.findByUid(uid);
+		if(user == null) {
+			throw new UserNotFoundException("用户不存在!");
+		}
+		
+		if(user.getIsDelete() == 1) {
+			throw new UserNotFoundException("用户已经冻结!");
+		}
+		
+		Date modifiedTime = new Date();
+		int rows = userMapper.updateAvatar(uid, avatar, username, modifiedTime);
+		if(rows != 1) {
+			throw new UpdateException("更新失败!");
+		}
+		
+	}
+	
+	/**
 	 * 对密码进行加密
 	 * @param password 原始密码
 	 * @param salt 盐值
@@ -194,6 +223,8 @@ public class UserServiceImpl implements UserService {
 		}
 		return str;
 	}
+
+	
 
 	
 

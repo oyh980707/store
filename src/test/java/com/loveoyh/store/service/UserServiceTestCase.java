@@ -84,6 +84,23 @@ public class UserServiceTestCase {
 	@Test
 	public void testChangeInfo() {
 		try {
+			Integer uid = 1;
+			String username = "root";
+			String avatar = "/usr/local/java/oyh.png";
+			userService.changeAvatar(uid, username, avatar);
+			System.err.println("OK.");
+		} catch (ServiceException e) {
+			System.err.println(e.getClass().getName());
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 测试更新头像信息
+	 */
+	@Test
+	public void testChangeAvatar() {
+		try {
 			User user = new User();
 			user.setUid(1);
 			user.setUsername("root");
