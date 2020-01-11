@@ -9,7 +9,7 @@ import com.loveoyh.store.service.ex.UsernameDuplicateException;
 
 /**
  * 处理用户数据的业务层接口
- * @author HP
+ * @author oyh
  *
  */
 public interface UserService {

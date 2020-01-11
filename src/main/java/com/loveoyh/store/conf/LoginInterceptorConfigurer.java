@@ -30,6 +30,7 @@ public class LoginInterceptorConfigurer implements WebMvcConfigurer {
 		excludePaths.add("/css/**");
 		excludePaths.add("/images/**");
 		excludePaths.add("/js/**");
+		excludePaths.add("/districts/");
 		
 		registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
 	}

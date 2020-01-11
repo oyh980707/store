@@ -11,6 +11,7 @@ import com.loveoyh.store.controller.ex.FileTypeException;
 import com.loveoyh.store.controller.ex.FileUploadException;
 import com.loveoyh.store.controller.ex.FileUploadIOException;
 import com.loveoyh.store.controller.ex.FileUploadStateException;
+import com.loveoyh.store.service.ex.AddressCountLimitException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.PasswordNotMatchException;
 import com.loveoyh.store.service.ex.ServiceException;
@@ -40,6 +41,9 @@ public abstract class BaseController {
 		}else if(e instanceof PasswordNotMatchException){
 			//4003-密码不匹配
 			jr.setState(4003);
+		}else if(e instanceof AddressCountLimitException){
+			//4004-地址数量范围异常类
+			jr.setState(4004);
 		}else if(e instanceof InsertException){
 			//5000-插入数据异常
 			jr.setState(5000);

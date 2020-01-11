@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.loveoyh.store.mapper.DistrictMapper">
+	<!-- 根据父级代号获取全国所有省/某省所有市/某市所有区的列表 -->
+	<!-- List<District> findByParent(String parent) -->
+	<select id="findByParent" resultType="com.loveoyh.store.entity.District">
+		SELECT
+			id,
+			parent,
+			code,
+			name
+		FROM
+			o_dict_district
+		WHERE
+			parent=#{parent}
+		ORDER BY
+			id
+	</select>
+	
+	<!-- 根据省/市/区代号查询详情 -->
+	<!-- District findByCode(String code) -->
+	<select id="findByCode" resultType="com.loveoyh.store.entity.District">
+		SELECT
+			name
+		FROM
+			o_dict_district
+		WHERE
+			code=#{code}
+	</select>
+</mapper>
