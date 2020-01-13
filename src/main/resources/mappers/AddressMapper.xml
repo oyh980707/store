@@ -58,4 +58,84 @@
 		WHERE
 			uid=#{uid}
 	</select>
+	
+	<!-- 获取最后修改的收货地址 -->
+	<!-- Address findLastModified(Integer uid) -->
+	<select id="findLastModified" resultType="com.loveoyh.store.entity.Address">
+		SELECT
+			aid
+		FROM
+			o_address
+		WHERE
+			uid=#{uid}
+		ORDER BY
+			modified_time desc
+		LIMIT 0,1
+	</select>
+	
+	<!-- 根据用户id查询所有的地址信息 -->
+	<!-- List<Address> findByUid(Integer uid) -->
+	<select id="findByUid" resultType="com.loveoyh.store.entity.Address">
+		SELECT
+			tag,
+			name,
+			province_name as provinceName,
+			city_name as cityName,
+			address,
+			phone,
+			aid,
+			is_default as isDefault
+		FROM
+			o_address
+		WHERE
+			uid=#{uid}
+		ORDER BY 
+			is_default desc, modified_time desc
+	</select>
+	
+	<!-- 根据收货地址id查找 -->
+	<!-- Address findByAid(Integer aid) -->
+	<select id="findByAid" resultType="com.loveoyh.store.entity.Address">
+		SELECT
+			uid,
+			is_default as isDefault
+		FROM
+			o_address
+		WHERE
+			aid=#{aid}
+	</select>
+	
+	<!-- 根据收货地址id删除收货地址 -->
+	<!-- Integer deleteByAid(Integer aid) -->
+	<delete id="deleteByAid">
+		DELETE FROM
+			o_address
+		WHERE
+			aid=#{aid}
+	</delete>
+	
+	<!-- 更新-将默认地址设为非默认 -->
+	<!-- Integer updateNonDefault(Integer uid) -->
+	<update id="updateNonDefault">
+		UPDATE
+			o_address
+		SET
+			is_default=0
+		WHERE
+			uid=#{uid}
+	</update>
+	
+	<!-- 更新-将指定地址设为默认 -->
+	<!-- Integer updateDefault(@Param("aid") Integer aid, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime) -->
+	<update id="updateDefault">
+		UPDATE
+			o_address
+		SET
+			is_default=1,
+			modified_user=#{modifiedUser},
+			modified_time=#{modifiedTime}
+		WHERE
+			aid=#{aid}
+	</update>
+	
 </mapper>

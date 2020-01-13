@@ -9,6 +9,7 @@
 		<meta name="renderer" content="webkit" />
 		<title>学子商城</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href=" ../images/index/favicon.ico" />
 		<!--导入核心文件-->
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -149,7 +150,7 @@
 									<th colspan="3">操作</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="address-list">
 								<tr>
 									<td>家</td>
 									<td>八戒</td>
@@ -270,5 +271,92 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//显示用户现有信息
+			showUserInfo();
+			
+			//绑定设置默认收货地址点击按钮
+			$("#address-list").on("click",".add-def",setDefault);
+			
+			//绑定删除收货地址点击按钮
+			$("#address-list").on("click",".add-del",deleteAddress);
+		});
+		
+		/** 展示用户收货地址信息 */
+		function showUserInfo(){
+			$.ajax({
+				"url":"/addresses/",
+				"data":null,
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var list = data.data;
+					
+					$("#address-list").empty();
+					for (var i = 0; i < list.length; i++) {
+						let address = addressTemplate.replace('[tag]',list[i].tag);
+						address = address.replace('[name]',list[i].name);
+						address = address.replace('[address]',list[i].provinceName+list[i].cityName+list[i].address);
+						address = address.replace('[phone]',list[i].phone);
+						address = $(address);
+						address.data("aid",list[i].aid)
+						$("#address-list").append(address);
+					}
+					$(".add-def:eq(0)").hide();
+				}
+			});
+		}
+		
+		/** 删除收货地址 */
+		function deleteAddress(e){
+			let aBtn = e.target;
+			let aid = $(aBtn).parent().parent().data("aid");
+			$.ajax({
+				"url":"/addresses/"+aid+"/delete",
+				"data":null,
+				"type":"POST",
+				"dataType":"json",
+				"success":function(data){
+					if(data.state == 0){
+						showUserInfo();
+					}
+				},
+				"error":function(){
+					alert("login timeout!");
+				}
+			});
+		}
+		
+		/** 设置默认收货地址 */
+		function setDefault(e){
+			let aBtn = e.target;
+			let aid = $(aBtn).parent().parent().data("aid");
+			$.ajax({
+				"url":"/addresses/"+aid+"/set_default",
+				"data":null,
+				"type":"POST",
+				"dataType":"json",
+				"success":function(data){
+					if(data.state == 0){
+						showUserInfo();
+					}
+				},
+				"error":function(){
+					alert("login timeout!");
+				}
+			});
+		}
+		
+		/** 收货地址模板 */
+		var addressTemplate = '<tr>'
+						+'<td>[tag]</td>'
+						+'<td>[name]</td>'
+						+'<td>[address]</td>'
+						+'<td>[phone]</td>'
+						+'<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>'
+						+'<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>'
+						+'<td><a class="btn btn-xs add-def btn-default">设为默认</a></td>'
+						+'</tr>';
+	</script>
 </html>

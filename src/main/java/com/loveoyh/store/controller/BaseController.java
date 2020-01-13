@@ -11,7 +11,9 @@ import com.loveoyh.store.controller.ex.FileTypeException;
 import com.loveoyh.store.controller.ex.FileUploadException;
 import com.loveoyh.store.controller.ex.FileUploadIOException;
 import com.loveoyh.store.controller.ex.FileUploadStateException;
+import com.loveoyh.store.service.ex.AccessDeniedException;
 import com.loveoyh.store.service.ex.AddressCountLimitException;
+import com.loveoyh.store.service.ex.DeleteException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.PasswordNotMatchException;
 import com.loveoyh.store.service.ex.ServiceException;
@@ -44,12 +46,18 @@ public abstract class BaseController {
 		}else if(e instanceof AddressCountLimitException){
 			//4004-地址数量范围异常类
 			jr.setState(4004);
+		}else if(e instanceof AccessDeniedException){
+			//4005-访问拒绝
+			jr.setState(4005);
 		}else if(e instanceof InsertException){
 			//5000-插入数据异常
 			jr.setState(5000);
 		}else if(e instanceof UpdateException){
 			//5001-数据更新异常
 			jr.setState(5001);
+		}else if(e instanceof DeleteException){
+			//5002-删除数据异常类
+			jr.setState(5002);
 		}else if(e instanceof FileEmptyException) {
 			//6000-文件为空异常类，例如没有选择文件或选择的文件为0字节的
 			jr.setState(6000);

@@ -1,5 +1,7 @@
 package com.loveoyh.store.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,45 @@ public class AddressServiceTestCase{
 			String username = "root";
 			service.addnew(address, uid, username);
 			System.err.println("testAddnew() is OK.");
+		} catch (ServiceException e) {
+			System.err.println(e.getClass().getName());
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testFindByUid() {
+		Integer uid = 1;
+		List<Address> list = service.getByUid(uid);
+		System.err.println("BEGIN:");
+		for (Address address : list) {
+			System.err.println(address);
+		}
+		System.err.println("END.");
+	}
+	
+	@Test
+	public void testSetDefault() {
+		try {
+			Integer aid = 12;
+			Integer uid = 1;
+			String username = "root";
+			service.setDefault(aid, uid, username);
+			System.err.println("OK.");
+		} catch (ServiceException e) {
+			System.err.println(e.getClass().getName());
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testDelete() {
+		try {
+			Integer aid = 22;
+			Integer uid = 1;
+			String username = "root";
+			service.delete(aid, uid, username);
+			System.err.println("OK.");
 		} catch (ServiceException e) {
 			System.err.println(e.getClass().getName());
 			System.err.println(e.getMessage());
