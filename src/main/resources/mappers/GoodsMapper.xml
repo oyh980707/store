@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.loveoyh.store.mapper.GoodsMapper">
+	<!-- 获取热销商品列表 -->
+	<!-- List<Goods> findHotList() -->
+	<select id="findHotList" resultType="com.loveoyh.store.entity.Goods">
+		SELECT
+			id,
+			title,
+			price,
+			image
+		FROM
+			o_goods
+		WHERE
+			status=1 AND num>100
+		ORDER BY
+			priority DESC
+		LIMIT 0,4
+	</select>
+	
+	<!-- 通过商品id获取商品信息 -->
+	<!-- Goods findById(Long id) -->
+	<select id="findById" parameterType="java.lang.Long" resultType="com.loveoyh.store.entity.Goods">
+		SELECT
+			title,
+			sell_point AS sellPoint,
+			price,
+			image,
+			status,
+			num
+		FROM
+			o_goods
+		WHERE
+			id=#{id}
+	</select>
+	
+</mapper>

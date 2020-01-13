@@ -9,6 +9,7 @@
 		<meta name="renderer" content="webkit" />
 		<title>学子商城</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href=" ../images/index/favicon.ico" />
 		<!--导入核心文件-->
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -23,6 +24,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/imgmove.css" />
 		<script src="../js/product.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/imgmove.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery-getUrlParam.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -92,7 +94,7 @@
 		<!--头部结束-->
 		<!--导航结束-->
 		<!--商品信息展示开始-->
-		<div class="container">
+		<div id="goods-detail" class="container">
 			<div class="col-md-offset-1 col-md-10">
 				<div class="col-md-6">
 					<div data="1" class="img-big move-img col-md-12">
@@ -296,5 +298,148 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
-
+	<script type="text/javascript">
+		//自定义封装函数（getUrlParam）
+		let id = $.getUrlParam("id");
+		
+		$(document).ready(function(){
+			//显示热销商品详情
+			showGoodsDetails(id);
+		});
+		
+		/** 获取并展示热销商品详情 */
+		function showGoodsDetails(id){
+			$.ajax({
+				"url":"/goods/"+id+"/details",
+				"data":null,
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var goodsData = data.data;
+					console.log(goodsData)
+					if(goodsData != null){
+						$("#goods-detail").empty();
+						let goodsDetail = goodsDetailTemplate.replace(/\[title\]/g,goodsData.title);
+						goodsDetail = goodsDetail.replace(/\[price\]/g,goodsData.price);
+						goodsDetail = goodsDetail.replace(/\[sell-point\]/g,goodsData.sellPoint);
+						goodsDetail = goodsDetail.replace(/\[image\]/g,goodsData.image);
+						goodsDetail = $(goodsDetail);
+						$("#goods-detail").append(goodsDetail);
+						
+						handleImage();
+					}
+				}
+			});
+		}
+		
+		/** 处理图片 */
+		function handleImage() {
+			/*商品小图片加鼠标移入加边框、移出移除边框*/
+			$(".img-small").hover(function() {
+					$(this).css("border", "1px solid #4288c3");
+				},
+				function() {
+					$(this).css("border", "");
+				})
+			//点击时变化大图片
+			$(".img-small").click(function() {
+					//获得点击的小图片数据
+					var n = $(this).attr("data");
+					//所有大图隐藏
+					$(".img-big").hide();
+					//显示点击的小图对应的大图
+					$(".img-big[data='" + n + "']").show();
+				})
+				//购物数量加1
+			$("#numUp").click(function() {
+				var n = parseInt($("#num").val());
+				$("#num").val(n + 1);
+			})
+			//购物数量-1
+			$("#numDown").click(function() {
+				var n = parseInt($("#num").val());
+				if (n == 1) {
+					return;
+				}
+				$("#num").val(n - 1);
+			})
+			//点购物车跳页面
+			$(".go-cart").click(function() {
+				location.href = "cart.html";
+			});
+			$(".img-big:eq(0)").show();
+			
+			/*图片变大的样式*/
+			$(".move-img").hover(function() {
+				$(this).animate({
+					"background-size": "110%"
+				}, "fast");
+			}, function() {
+				$(this).animate({
+					"background-size": "100%"
+				}, "fast");
+			})
+		}
+		/** 收货地址模板 */
+		var goodsDetailTemplate = '<div class="col-md-offset-1 col-md-10">'
+									+'<div class="col-md-6">'
+										+'<div data="1" class="img-big move-img col-md-12">'
+											+'<img src="..[image]1_big.png" class="img-responsive" />'
+										+'</div>'
+										+'<div data="2" class="img-big move-img col-md-12">'
+											+'<img src="..[image]2_big.png" class="img-responsive" />'
+										+'</div>'
+										+'<div data="3" class="img-big move-img col-md-12">'
+											+'<img src="..[image]3_big.png" class="img-responsive" />'
+										+'</div>'
+										+'<div data="4" class="img-big move-img col-md-12">'
+											+'<img src="..[image]4_big.png" class="img-responsive" />'
+										+'</div>'
+										+'<div data="5" class="img-big move-img col-md-12">'
+											+'<img src="..[image]5_big.png" class="img-responsive" />'
+										+'</div>'
+										+'<div data="1" class="col-md-2 img-small">'
+											+'<img src="..[image]1.jpg" class="img-responsive" />'
+										+'</div>'
+										+'<div data="2" class="col-md-2 img-small">'
+											+'<img src="..[image]2.jpg" class="img-responsive" />'
+										+'</div>'
+										+'<div data="3" class="col-md-2 img-small">'
+											+'<img src="..[image]3.jpg" class="img-responsive" />'
+										+'</div>'
+										+'<div data="4" class="col-md-2 img-small">'
+											+'<img src="..[image]4.jpg" class="img-responsive" />'
+										+'</div>'
+										+'<div data="5" class="col-md-2 img-small">'
+											+'<img src="..[image]5.jpg" class="img-responsive" />'
+										+'</div>'
+									+'</div>'
+									+'<div class="col-md-6">'
+										+'<h1 class="col-md-12 title-row-1" title="[title]">[title]</h1>'
+										+'<p class="col-md-12 text-row-1"><small>[sell-point]</small></p>'
+										+'<div class="col-md-12 price-bar">'
+											+'<small>学员售价：</small> ¥[price]'
+										+'<div><small>*退货补运费 *7天无理由退货 *24小时快速退款 </small></div>'
+										+'</div>'
+										+'<form class="form-inline product-form col-md-12" role="form">'
+											+'<div class="col-md-12 form-space">'
+												+'<label for="num">数量：</label>'
+												+'<input id="numDown" type="button" value="-" class="num-btn" />'
+												+'<input id="num" type="text" size="2" readonly="readonly" class="num-text" value="1">'
+												+'<input id="numUp" class="num-btn" type="button" value="+" />'
+											+'</div>'
+											+'<div class="col-md-12 form-space">'
+												+'<p><small><b>学子商城</b>发货并提供售后服务,今日下单,明日送达</small></p>'
+											+'</div>'
+											+'<div class="col-md-12 form-space">'
+												+'<input class="btn btn-primary btn-lg btn-block" type="button" value="立即购买">'
+											+'</div>'
+											+'<div class="col-md-12 form-space">'
+												+'<button type="button" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>'
+												+'<button type="button" class="btn btn-default"><span class="fa fa-heart-o"></span> 加入收藏</button>'
+											+'</div>'
+										+'</form>'
+									+'</div>'
+								+'</div>';
+	</script>
 </html>

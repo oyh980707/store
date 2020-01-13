@@ -9,6 +9,7 @@
 		<meta name="renderer" content="webkit" />
 		<title>学子商城</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href=" ../images/index/favicon.ico" />
 		<!--导入核心文件-->
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -177,7 +178,7 @@
 					<div class="panel-heading">
 						<p class="panel-title">热销排行</p>
 					</div>
-					<div class="panel-body panel-item">
+					<div id="hot-list" class="panel-body panel-item">
 						<div class="col-md-12">
 							<div class="col-md-7 text-row-2"><a href="product.html">广博(GuangBo)10本装40张A5牛皮纸记事本子日记本办公软抄本GBR0731</a></div>
 							<div class="col-md-2">¥23</div>
@@ -288,5 +289,40 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//显示热销商品
+			showHotGoodsList();
+		});
+		
+		/** 展示热销商品列表 */
+		function showHotGoodsList(){
+			$.ajax({
+				"url":"/goods/hot",
+				"data":null,
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var list = data.data;
+					
+					$("#hot-list").empty();
+					for (var i = 0; i < list.length; i++) {
+						let goods = goodsTemplate.replace('[title]',list[i].title);
+						goods = goods.replace('[price]',list[i].price);
+						goods = goods.replace('[image]',list[i].image);
+						goods = goods.replace('[id]',list[i].id);
+						goods = $(goods);
+						$("#hot-list").append(goods);
+					}
+				}
+			});
+		}
+		
+		/** 商品模板模板 */
+		var goodsTemplate = '<div class="col-md-12">'
+			+'<div class="col-md-7 text-row-2"><a href="product.html?id=[id]">[title]</a></div>'
+			+'<div class="col-md-2">[price]</div>'
+			+'<div class="col-md-3"><img src="..[image]collect.png" class="img-responsive" /></div>'
+			+'</div>';
+	</script>
 </html>

@@ -24,13 +24,17 @@ public class LoginInterceptorConfigurer implements WebMvcConfigurer {
 		List<String> excludePaths = new ArrayList<String>();
 		excludePaths.add("/web/login.html");
 		excludePaths.add("/web/register.html");
-		excludePaths.add("/users/login");
-		excludePaths.add("/users/reg");
 		excludePaths.add("/bootstrap3/**");
 		excludePaths.add("/css/**");
 		excludePaths.add("/images/**");
 		excludePaths.add("/js/**");
+		excludePaths.add("/web/index.html");
+		excludePaths.add("/web/product.html");
+		
+		excludePaths.add("/users/login");
+		excludePaths.add("/users/reg");
 		excludePaths.add("/districts/");
+		excludePaths.add("/goods/**");
 		
 		registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
 	}
