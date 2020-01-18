@@ -149,7 +149,7 @@
 							<input class="btn btn-primary btn-lg btn-block" type="button" value="立即购买">
 						</div>
 						<div class="col-md-12 form-space">
-							<button type="button" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>
+							<button type="button" id="btn-add-to-cart" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>
 							<button type="button" class="btn btn-default"><span class="fa fa-heart-o"></span> 加入收藏</button>
 						</div>
 					</form>
@@ -305,7 +305,31 @@
 		$(document).ready(function(){
 			//显示热销商品详情
 			showGoodsDetails(id);
+			
+			//为添加购物车按钮绑定点击事件
+			$(document).on("click","#btn-add-to-cart",addToCart);
 		});
+		
+		/** 添加到购物车 */
+		function addToCart(){
+			$.ajax({
+				"url":"/carts/add_to_cart",
+				"data":{
+					"gid":id,
+					"num":$("#num").val()
+				},
+				"type":"POST",
+				"dataType":"json",
+				"success":function(data){
+					if(data.state == 0){
+						alert("添加成功！");
+					}					
+				},
+				"error":function(){
+					alert("您尚未登录，或登录超时！")
+				}
+			});
+		}
 		
 		/** 获取并展示热销商品详情 */
 		function showGoodsDetails(id){
@@ -316,7 +340,6 @@
 				"dataType":"json",
 				"success":function(data){
 					var goodsData = data.data;
-					console.log(goodsData)
 					if(goodsData != null){
 						$("#goods-detail").empty();
 						let goodsDetail = goodsDetailTemplate.replace(/\[title\]/g,goodsData.title);
@@ -363,10 +386,6 @@
 				}
 				$("#num").val(n - 1);
 			})
-			//点购物车跳页面
-			$(".go-cart").click(function() {
-				location.href = "cart.html";
-			});
 			$(".img-big:eq(0)").show();
 			
 			/*图片变大的样式*/
@@ -434,8 +453,8 @@
 											+'<div class="col-md-12 form-space">'
 												+'<input class="btn btn-primary btn-lg btn-block" type="button" value="立即购买">'
 											+'</div>'
-											+'<div class="col-md-12 form-space">'
-												+'<button type="button" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>'
+											+'<div id="" class="col-md-12 form-space">'
+												+'<button type="button" id="btn-add-to-cart" class="btn btn-default go-cart"><span class="fa fa-cart-plus"></span> 加入购物车</button>'
 												+'<button type="button" class="btn btn-default"><span class="fa fa-heart-o"></span> 加入收藏</button>'
 											+'</div>'
 										+'</form>'

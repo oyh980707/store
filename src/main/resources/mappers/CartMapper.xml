@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.loveoyh.store.mapper.CartMapper">
+
+	<!-- 插入购物车数据 -->
+	<!-- Integer insert(Cart cart) -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="cid">
+		INSERT INTO o_cart (
+		    uid,
+		    gid,
+		    num,
+		    created_user,
+		    created_time,
+		    modified_user,
+		    modified_time
+		) VALUES (
+			#{uid},
+			#{gid},
+		    #{num},
+		    #{createdUser},
+		    #{createdTime},
+		    #{modifiedUser},
+		    #{modifiedTime}
+		)
+	</insert>
+	
+	<!-- 根据用户id和商品id查询购物车数据 -->
+	<!-- Cart findByUidAndGid(
+	    @Param("uid") Integer uid,
+	    @Param("gid") Long gid) -->
+	<select id="findByUidAndGid"
+		resultType="com.loveoyh.store.entity.Cart">
+		SELECT
+			cid, num
+		FROM
+			o_cart
+		WHERE
+			uid=#{uid} AND gid=#{gid}
+	</select>
+	
+	<!-- 修改购物车中商品的数量 -->
+	<!-- Integer updateNum(
+	    @Param("cid") Integer cid, 
+	    @Param("num") Integer num, 
+	    @Param("modifiedUser") String modifiedUser, 
+	    @Param("modifiedTime") Date modifiedTime) -->
+	<update id="updateNum">
+		UPDATE
+			o_cart
+		SET
+			num=#{num},
+			modified_user=#{modifiedUser},
+			modified_time=#{modifiedTime}
+		WHERE
+			cid=#{cid}
+	</update>
+	
+	
+	
+</mapper>
