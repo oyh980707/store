@@ -1,12 +1,14 @@
 package com.loveoyh.store.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.loveoyh.store.entity.Cart;
+import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.mapper.CartMapper;
 import com.loveoyh.store.service.CartService;
 import com.loveoyh.store.service.ex.InsertException;
@@ -54,6 +56,14 @@ public class CartServiceImpl implements CartService{
 	}
 	
 	/**
+	 * 根据用户id查询所有的购物车商品
+	 */
+	@Override
+	public List<CartVO> getByUid(Integer uid) {
+		return findByUid(uid);
+	}
+	
+	/**
 	 * 插入购物车数据
 	 * @param cart 购物车数据
 	 * @throws InsertException
@@ -93,4 +103,13 @@ public class CartServiceImpl implements CartService{
 	private Cart findByUidAndGid(Integer uid, Long gid) {
 		return cartMapper.findByUidAndGid(uid, gid);
 	}
+
+	/**
+	 * 通过用户id查询有关显示购物车相关的数据
+	 * @param uid 用户id
+	 * @return 购物车相关数据，通过类CartVO携带数据
+	 */
+	private List<CartVO> findByUid(Integer uid){
+		return cartMapper.findByUid(uid);
+	};
 }

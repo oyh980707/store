@@ -1,10 +1,12 @@
 package com.loveoyh.store.mapper;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.loveoyh.store.entity.Cart;
+import com.loveoyh.store.entity.vo.CartVO;
 
 /**
  * 购物车数据接口
@@ -36,4 +38,11 @@ public interface CartMapper {
 	 * @return 购物车数据，包含cid和num
 	 */
 	public Cart findByUidAndGid(@Param("uid") Integer uid, @Param("gid") Long gid);
+	
+	/**
+	 * 通过用户id查询有关显示购物车相关的数据
+	 * @param uid 用户id
+	 * @return 购物车相关数据，通过类CartVO携带数据
+	 */
+	public List<CartVO> findByUid(Integer uid);
 }

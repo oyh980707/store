@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.District;
+import com.loveoyh.store.entity.vo.CartVO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,4 +50,14 @@ public class CartMapperTestCase {
 		System.err.println("OK.");
 	}
 	
+	@Test
+	public void testFindByUid() {
+		Integer uid = 1;
+		List<CartVO> lists = mapper.findByUid(uid);
+		System.err.println("BEGIN:");
+		for (CartVO cartVO : lists) {
+			System.err.println(cartVO);
+		}
+		System.err.println("END.");
+	}
 }

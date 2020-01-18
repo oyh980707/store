@@ -26,6 +26,29 @@
 		)
 	</insert>
 	
+	<!-- 通过用户id查询有关显示购物车相关的数据 -->
+	<!-- List<CartVO> findByUid(Integer uid) -->
+	<select id="findByUid" resultType="com.loveoyh.store.entity.vo.CartVO">
+		SELECT 
+			cid,
+			uid,
+			gid,
+			title,
+			price,
+			image,
+			o_cart.num
+		FROM
+			o_cart 
+		LEFT JOIN 
+			o_goods
+		ON
+			o_cart.gid=o_goods.id
+		WHERE
+			uid=#{uid}
+		ORDER BY 
+			o_cart.created_time DESC 
+	</select>
+	
 	<!-- 根据用户id和商品id查询购物车数据 -->
 	<!-- Cart findByUidAndGid(
 	    @Param("uid") Integer uid,

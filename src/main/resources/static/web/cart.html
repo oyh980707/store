@@ -9,6 +9,7 @@
 		<meta name="renderer" content="webkit" />
 		<title>学子商城</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href=" ../images/index/favicon.ico" />
 		<!--导入核心文件-->
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -111,7 +112,7 @@
 										<th>操作</th>
 									</tr>
 								</thead>
-								<tbody class="cart-body">
+								<tbody id="cart-list" class="cart-body">
 									<tr>
 										<td>
 											<input type="checkbox" class="ckitem" />
@@ -273,7 +274,106 @@
 				$(".link-account").click(function() {
 					location.href = "orderConfirm.html";
 				})
-			})
+				
+				//显示购物车所有商品
+				showCart();
+				
+				//绑定加减数量
+				$("#cart-list").on("click",".add-num",addNum);
+				$("#cart-list").on("click",".reduce-num",reduceNum);
+			});
+			
+			/** 展示用户购物车所有商品 */
+			function showCart(){
+				$.ajax({
+					"url":"/carts/",
+					"data":null,
+					"type":"get",
+					"dataType":"json",
+					"success":function(data){
+						var list = data.data;
+						
+						$("#cart-list").empty();
+						for (var i = 0; i < list.length; i++) {
+							let cart = cartTemplate.replace('[title]',list[i].title);
+							cart = cart.replace('[price]',list[i].price);
+							cart = cart.replace('[num]',list[i].num);
+							cart = cart.replace('[image]',list[i].image);
+							cart = $(cart);
+							cart.data("gid",list[i].gid)
+							$("#cart-list").append(cart);
+						}
+					}
+				});
+			}
+			
+			/** 按加号数量增 */
+			function addNum(e){
+				var event = e || window.event;
+				var target = event.target || event.srcElement;
+				let btnPrice = $(target).prev();
+				let cart = $(target).parent().parent();
+				$.ajax({
+					"url":"/carts/add_to_cart",
+					"data":{
+						"gid":cart.data("gid"),
+						"num":1
+					},
+					"type":"POST",
+					"dataType":"json",
+					"success":function(data){
+						if(data.state == 0){
+							btnPrice.val(parseInt(btnPrice.val()) + 1);
+						}
+					},
+					"error":function(){
+						alert("您尚未登录，或登录超时！")
+					}
+				});
+			}
+			
+			/** 按减号数量减 */
+			function reduceNum(e){
+				var event = e || window.event;
+				var target = event.target || event.srcElement;
+				let btnPrice = $(target).next();
+				let cart = $(target).parent().parent();
+				$.ajax({
+					"url":"/carts/add_to_cart",
+					"data":{
+						"gid":cart.data("gid"),
+						"num":"-1"
+					},
+					"type":"POST",
+					"dataType":"json",
+					"success":function(data){
+						if(data.state == 0){
+							btnPrice.val(parseInt(btnPrice.val()-1));
+						}
+					},
+					"error":function(){
+						alert("您尚未登录，或登录超时！")
+					}
+				});
+			}
+			
+			let cartTemplate = '<tr>'
+								+'<td>'
+									+'<input type="checkbox" class="ckitem" />'
+								+'</td>'
+								+'<td><img src="..[image]collect.png" class="img-responsive" /></td>'
+								+'<td>[title]</td>'
+								+'<td>¥<span>[price]</span></td>'
+								+'<td>'
+									+'<input type="button" value="-" class="num-btn reduce-num" />'
+									+'<input type="text" size="2" readonly="readonly" class="num-text" value="[num]">'
+									+'<input class="num-btn add-num" type="button" value="+"/>'
+								+'</td>'
+								+'<td><span></span></td>'
+								+'<td>'
+									+'<input type="button" class="cart-del btn btn-default btn-xs" value="删除" />'
+								+'</td>'
+							   +'</tr>';
 		</script>
 	</body>
 

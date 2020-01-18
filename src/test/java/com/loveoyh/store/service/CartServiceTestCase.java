@@ -1,5 +1,7 @@
 package com.loveoyh.store.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.District;
+import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.service.ex.ServiceException;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +34,17 @@ public class CartServiceTestCase{
 			System.err.println(e.getClass().getName());
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void testGetByUid() {
+		Integer uid = 1;
+		List<CartVO> lists = service.getByUid(uid);
+		System.err.println("BEGIN:");
+		for (CartVO cartVO : lists) {
+			System.err.println(cartVO);
+		}
+		System.err.println("END.");
 	}
 	
 }
