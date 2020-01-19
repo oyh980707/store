@@ -56,4 +56,12 @@ public interface CartService {
 	 */
 	public Integer reduce(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
 	
+	/**
+	 * 通过多个购物车id查询有关显示购物车相关的数据集合
+	 * @param cids 多个购物车数据id
+	 * @param uid 用户id
+	 * @return匹配购物车数据集合，如果没有匹配的数据则返回null
+	 */
+	public List<CartVO> getByCids(Integer[] cids, Integer uid);
+	
 }

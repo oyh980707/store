@@ -39,10 +39,26 @@ public class CartController extends BaseController {
 	
 	@GetMapping("/")
 	public JsonResult<List<CartVO>> get(HttpSession session){
-		// 从Session中获取uid和username
+		// 从Session中获取uid
 		Integer uid = getUidFromSession(session);
 		
 		List<CartVO> list = cartService.getByUid(uid);
+		
+		return new JsonResult<List<CartVO>>(list);
+	}
+	
+	@GetMapping("get_by_cids")
+	public JsonResult<List<CartVO>> getByCids(Integer[] cids,HttpSession session){
+		//判断cids是否为null
+		if(cids == null) {
+			JsonResult<List<CartVO>> jr = new JsonResult<List<CartVO>>();
+			jr.setState(SUCCESS);
+			return jr;
+		}
+		// 从Session中获取uid
+		Integer uid = getUidFromSession(session);
+		
+		List<CartVO> list = cartService.getByCids(cids, uid);
 		
 		return new JsonResult<List<CartVO>>(list);
 	}
@@ -72,4 +88,6 @@ public class CartController extends BaseController {
 		jr.setData(num);
 		return jr;
 	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.loveoyh.store.service.impl;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -64,6 +65,30 @@ public class CartServiceImpl implements CartService{
 	public List<CartVO> getByUid(Integer uid) {
 		return findByUid(uid);
 	}
+	
+	/**
+	 * 通过多个购物车id查询有关显示购物车相关的数据集合业务流程
+	 * 1.查询数据
+	 * 2.逐一判断结果中的每一条数据，是否都是当前用户的数据
+	 * 	如果不是当前用户的数据，移除该数据
+	 * 3.返回数据
+	 * 
+	 * 注：
+	 * 	此处涉及到元素的删除，使用迭代器来完成删除集合中的元素
+	 */
+	@Override
+	public List<CartVO> getByCids(Integer[] cids, Integer uid) {
+		List<CartVO> results = findByCids(cids);
+		
+		Iterator<CartVO> it = results.iterator();
+		while(it.hasNext()) {
+			if(uid != it.next().getUid()) {
+				it.remove();
+			}
+		}
+		return results;
+	}
+	
 	
 	/**
 	 * 用户增加购物车商品的数量（即增加数量1）的业务流程：
@@ -184,6 +209,15 @@ public class CartServiceImpl implements CartService{
 	 */
 	private List<CartVO> findByUid(Integer uid){
 		return cartMapper.findByUid(uid);
+	}
+	
+	/**
+	 * 通过多个购物车id查询有关显示购物车相关的数据集合
+	 * @param cids 多个购物车数据id
+	 * @return 匹配购物车数据集合，如果没有匹配的数据则返回null
+	 */
+	private List<CartVO> findByCids(Integer[] cids){
+		return cartMapper.findByCids(cids);
 	}
 	
 }

@@ -96,7 +96,7 @@
 						<p class="panel-title"><span class="fa fa-shopping-cart"></span> 购物车</p>
 					</div>
 					<div class="panel-body">
-						<form role="form">
+						<form action="orderConfirm.html" role="form">
 							<!--购物车表格开始-->
 							<table class="cart-table" width="100%">
 								<thead>
@@ -174,7 +174,7 @@
 							</div>
 							<div>
 								<span class="pull-right">
-								<input type="button" value="  结  算  " class="btn btn-primary btn-lg link-account" />
+								<input type="submit" value="  结  算  " class="btn btn-primary btn-lg link-account" />
 							</span>
 							</div>
 						</form>
@@ -294,7 +294,7 @@
 						
 						$("#cart-list").empty();
 						for (var i = 0; i < list.length; i++) {
-							let cart = cartTemplate.replace('[title]',list[i].title);
+							let cart = cartTemplate.replace(/\[title\]/g,list[i].title);
 							cart = cart.replace(/\[price\]/g,list[i].price);
 							cart = cart.replace(/\[num\]/g,list[i].num);
 							cart = cart.replace(/\[image\]/g,list[i].image);
@@ -356,9 +356,10 @@
 				});
 			}
 			
+			/** 购物车模板 */
 			let cartTemplate = '<tr>'
 								+'<td>'
-									+'<input type="checkbox" class="ckitem" />'
+									+'<input name="cids" value="[cid]" type="checkbox" class="ckitem" />'
 								+'</td>'
 								+'<td><img src="..[image]collect.png" class="img-responsive" /></td>'
 								+'<td>[title]</td>'

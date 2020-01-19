@@ -48,6 +48,18 @@ public class CartServiceTestCase{
 	}
 	
 	@Test
+	public void testGetByCids() {
+		Integer uid = 1;
+		Integer[] cids = {1,2,3,4};
+		List<CartVO> lists = service.getByCids(cids,uid);
+		System.err.println("BEGIN:");
+		for (CartVO item : lists) {
+			System.err.println(item);
+		}
+		System.err.println("END.");
+	}
+	
+	@Test
 	public void testIncrease() {
 		try {
 			Integer cid = 1;
@@ -76,4 +88,6 @@ public class CartServiceTestCase{
 			System.err.println(e.getMessage());
 		}
 	}
+	
+	
 }

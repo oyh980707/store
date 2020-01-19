@@ -42,7 +42,14 @@ public interface CartMapper {
 	 * @return 匹配购物车数据，如果没有匹配的数据则返回null
 	 */
 	public Cart findByCid(Integer cid);
-
+	
+	/**
+	 * 通过多个购物车id查询有关显示购物车相关的数据集合
+	 * @param cids 多个购物车数据id
+	 * @return匹配购物车数据集合，如果没有匹配的数据则返回null
+	 */
+	public List<CartVO> findByCids(Integer[] cids);
+	
 	/**
 	 * 修改购物车中商品的数量
 	 * @param cid 购物车id

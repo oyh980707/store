@@ -55,8 +55,8 @@ public class CartMapperTestCase {
 		Integer uid = 1;
 		List<CartVO> lists = mapper.findByUid(uid);
 		System.err.println("BEGIN:");
-		for (CartVO cartVO : lists) {
-			System.err.println(cartVO);
+		for (CartVO item : lists) {
+			System.err.println(item);
 		}
 		System.err.println("END.");
 	}
@@ -66,6 +66,17 @@ public class CartMapperTestCase {
 		Integer cid = 2;
 		Cart cart = mapper.findByCid(cid);
 		System.err.println("cart:"+cart);
+		System.err.println("END.");
+	}
+	
+	@Test
+	public void testFindByCids() {
+		Integer[] cids = {1,2};
+		List<CartVO> lists = mapper.findByCids(cids);
+		System.err.println("BEGIN:");
+		for (CartVO item : lists) {
+			System.err.println(item);
+		}
 		System.err.println("END.");
 	}
 }

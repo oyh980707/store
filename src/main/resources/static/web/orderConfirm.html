@@ -9,6 +9,7 @@
 		<meta name="renderer" content="webkit" />
 		<title>学子商城</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href=" ../images/index/favicon.ico" />
 		<!--导入核心文件-->
 		<script src="../bootstrap3/js/holder.js"></script>
 		<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -115,7 +116,7 @@
 							<label for="name">
 								<p>选择收货地址：</p>
 							</label>
-							<select class="form-control">
+							<select id="address-list" class="form-control">
 								<option>八戒&nbsp;&nbsp;&nbsp;家&nbsp;&nbsp;&nbsp;北京市房山区高老庄3排6号&nbsp;&nbsp;&nbsp;1380***1234</option>
 								<option>八戒&nbsp;&nbsp;&nbsp;公司&nbsp;&nbsp;&nbsp;北京市海淀区中关村中路1号1001室&nbsp;&nbsp;&nbsp;1380***1234</option>
 								<option>八戒&nbsp;&nbsp;&nbsp;宿舍&nbsp;&nbsp;&nbsp;北京市海淀区永丰镇30号&nbsp;&nbsp;&nbsp;1380***1234</option>
@@ -136,7 +137,7 @@
 											<th width="20%">金额</th>
 										</tr>
 									</thead>
-									<tbody class="cart-body">
+									<tbody id="cart-list" class="cart-body">
 										<tr>
 											<td><img src="../images/portal/12DELLXPS13-silvery/collect.png" class="img-responsive" /></td>
 											<td>联想(Lenovo)小新Air13 Pro 13.3英寸14.8mm超轻薄笔记本电脑</td>
@@ -151,8 +152,8 @@
 								<div class="total-bar">
 									&nbsp;
 									<span class="pull-right">已选商品
-								<span id="selectCount">1</span>件 总价¥
-									<span id="selectTotal">5298</span>元
+										<span id="selectCount">1</span>件 总价¥
+										<span id="selectTotal">5298</span>元
 									</span>
 								</div>
 							</div>
@@ -252,5 +253,85 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//显示用户收货地址信息
+			showAddressList();
+			
+			//显示购物车中勾选结算商品
+			showCart();
+		});
+		
+		/** 展示用户收货地址信息 */
+		function showAddressList(){
+			$.ajax({
+				"url":"/addresses/",
+				"data":null,
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var list = data.data;
+					
+					$("#address-list").empty();
+					for (var i = 0; i < list.length; i++) {
+						let address = addressTemp.replace(/\[tag]/g,list[i].tag);
+						address = address.replace(/\[aid\]/g,list[i].name);
+						address = address.replace(/\[name]/g,list[i].name);
+						address = address.replace(/\[address]/g,list[i].provinceName+list[i].cityName+list[i].address);
+						address = address.replace(/\[phone]/g,list[i].phone);
+						address = $(address);
+						address.data("aid",list[i].aid)
+						$("#address-list").append(address);
+					}
+				}
+			});
+		}
+		
+		/** 展示用户购物车勾选结算商品 */
+		function showCart(){
+			$.ajax({
+				"url":"/carts/get_by_cids",
+				"data":location.search.substr(1),
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var list = data.data;
+					let allTotal = 0;
+					
+					$("#cart-list").empty();
+					if(list == null){
+						$("#selectCount").html(0);
+						$("#selectTotal").html(allTotal);
+						return;
+					}
+					
+					for (var i = 0; i < list.length; i++) {
+						let cart = cartTemp.replace(/\[title\]/g,list[i].title);
+						cart = cart.replace(/\[price\]/g,list[i].price);
+						cart = cart.replace(/\[num\]/g,list[i].num);
+						cart = cart.replace(/\[image\]/g,list[i].image);
+						cart = cart.replace(/\[total-price\]/g,list[i].price*list[i].num);
+						cart = cart.replace(/\[cid\]/g,list[i].cid);
+						cart = $(cart);
+						cart.data("cid",list[i].cid);
+						$("#cart-list").append(cart);
+					}
+					
+					$("#selectCount").html(list.length);
+					$("#selectTotal").html(allTotal);
+				}
+			});
+		}
+		
+		/** 收货地址模板 */
+		let addressTemp = '<option value="[cid]">[name]&nbsp;&nbsp;&nbsp;[tag]&nbsp;&nbsp;&nbsp;[address]&nbsp;&nbsp;&nbsp;[phone]</option>';
+		
+		let cartTemp = '<tr>'
+						+'<td><img src="..[image]collect.png" class="img-responsive" /></td>'
+						+'<td>[title]</td>'
+						+'<td>¥<span>[price]</span></td>'
+						+'<td>[num]</td>'
+						+'<td>¥<span>[total-price]</span></td>'
+						+'</tr>';
+	</script>
 </html>
