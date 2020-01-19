@@ -11,6 +11,8 @@ import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.mapper.CartMapper;
 import com.loveoyh.store.service.CartService;
+import com.loveoyh.store.service.ex.AccessDeniedException;
+import com.loveoyh.store.service.ex.CartNotFoundException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.UpdateException;
 /**
@@ -64,6 +66,79 @@ public class CartServiceImpl implements CartService{
 	}
 	
 	/**
+	 * 用户增加购物车商品的数量（即增加数量1）的业务流程：
+	 * 1.根据参数cid查询购物车数据并判断查询结果是否为null
+	 * 	是：抛出CartNotFoundException
+	 * 2.判断查询结果中的uid与参数uid是否不匹配
+	 * 	是：抛出AccessDeniedException
+	 * 3.从查询结果中取出num，增加1，得到新的数量
+	 * 4.更新商品数量
+	 * 5.返回新的数量(newNum)
+	 */
+	@Override
+	public Integer increase(Integer cid, Integer uid, String username)
+			throws CartNotFoundException, AccessDeniedException, UpdateException {
+		Cart cart = findByCid(cid);
+		if(cart == null) {
+			throw new CartNotFoundException("cart data does not exist!");
+		}
+		
+		if(cart.getUid() != uid) {
+			throw new AccessDeniedException("Operation object and address ownership are not consistent!");
+		}
+		
+		Integer newNum = cart.getNum() + 1;
+		updateNum(cid, newNum, username, new Date());
+		
+		return newNum;
+	};
+	
+	/**
+	 * 用户减少购物车商品的数量（即减少数量1）的业务流程：
+	 * 1.根据参数cid查询购物车数据并判断查询结果是否为null
+	 * 	是：抛出CartNotFoundException
+	 * 2.判断查询结果中的uid与参数uid是否不匹配
+	 * 	是：抛出AccessDeniedException
+	 * 3.从查询结果中取出num，减小1，得到新的数量
+	 * 4.判断是否小于等于0
+	 * 	是：删除该购物车
+	 * 5.更新商品数量
+	 * 6.返回新的数量(newNum)
+	 */
+	@Override
+	public Integer reduce(Integer cid, Integer uid, String username)
+			throws CartNotFoundException, AccessDeniedException, UpdateException {
+		Cart cart = findByCid(cid);
+		if(cart == null) {
+			throw new CartNotFoundException("cart data does not exist!");
+		}
+		
+		if(cart.getUid() != uid) {
+			throw new AccessDeniedException("Operation object and address ownership are not consistent!");
+		}
+		
+		Integer newNum = cart.getNum() - 1;
+		//判断是否小于等于0
+		if(newNum <= 0) {
+			//TODO 删除该商品
+			return 0;
+		}
+		
+		updateNum(cid, newNum, username, new Date());
+		
+		return newNum;
+	}
+	
+	/**
+	 * 通过购物车id查询有关显示购物车相关的数据
+	 * @param cid 购物车数据id
+	 * @return 匹配购物车数据，如果没有匹配的数据则返回null
+	 */
+	private Cart findByCid(Integer cid) {
+		return cartMapper.findByCid(cid);
+	}
+	
+	/**
 	 * 插入购物车数据
 	 * @param cart 购物车数据
 	 * @throws InsertException
@@ -71,8 +146,7 @@ public class CartServiceImpl implements CartService{
 	private void insert(Cart cart) throws InsertException {
 		Integer rows = cartMapper.insert(cart);
 		if (rows != 1) {
-			throw new InsertException(
-				"将商品添加到购物车失败！插入数据时出现未知错误！");
+			throw new InsertException("将商品添加到购物车失败！插入数据时出现未知错误！");
 		}
 	}
 	
@@ -89,8 +163,7 @@ public class CartServiceImpl implements CartService{
 			throws UpdateException {
 		Integer rows = cartMapper.updateNum(cid, num, modifiedUser, modifiedTime);
 		if (rows != 1) {
-			throw new UpdateException(
-				"更新商品数量失败！更新数据时出现未知错误！");
+			throw new UpdateException("更新商品数量失败！更新数据时出现未知错误！");
 		}
 	}
 	
@@ -111,5 +184,6 @@ public class CartServiceImpl implements CartService{
 	 */
 	private List<CartVO> findByUid(Integer uid){
 		return cartMapper.findByUid(uid);
-	};
+	}
+	
 }

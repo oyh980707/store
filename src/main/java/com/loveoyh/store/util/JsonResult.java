@@ -37,10 +37,6 @@ public class JsonResult<T> {
 	public JsonResult() {
 	}
 	
-	public JsonResult(Integer state) {
-		this.state = state;
-	}
-	
 	public JsonResult(String message) {
 		state = ERROR;
 		this.message = message;

@@ -48,7 +48,10 @@ public class UserController extends BaseController{
 	@RequestMapping("reg")
 	public JsonResult<Void> reg(User user){
 		userService.reg(user);
-		return new JsonResult<Void>(SUCCESS);
+		
+		JsonResult<Void> jr = new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@RequestMapping("login")
@@ -75,7 +78,10 @@ public class UserController extends BaseController{
 		String username = getUsernameFromSession(session);
 		//执行修改
 		userService.changePassword(uid, username, oldPassword, newPassword);
-		return new JsonResult<Void>(SUCCESS);
+		
+		JsonResult<Void> jr = new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@RequestMapping("change_info")
@@ -88,7 +94,9 @@ public class UserController extends BaseController{
 		
 		userService.changeInfo(user);
 		
-		return new JsonResult<Void>(SUCCESS);
+		JsonResult<Void> jr = new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@PostMapping("change_avatar")
@@ -142,7 +150,8 @@ public class UserController extends BaseController{
 		userService.changeAvatar(uid, username, avatar);
 		
 		//返回图片地址
-		JsonResult<String> jr = new JsonResult<String>(SUCCESS);
+		JsonResult<String> jr = new JsonResult<String>();
+		jr.setState(SUCCESS);
 		jr.setData(avatar);
 		return jr;
 	}

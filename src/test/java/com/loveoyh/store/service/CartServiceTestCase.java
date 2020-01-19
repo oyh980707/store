@@ -47,4 +47,33 @@ public class CartServiceTestCase{
 		System.err.println("END.");
 	}
 	
+	@Test
+	public void testIncrease() {
+		try {
+			Integer cid = 1;
+			Integer uid = 1;
+			String username = "root";
+			Integer num = service.increase(cid, uid, username);
+			System.err.println("num:"+num);
+			System.err.println("OK.");
+		} catch (ServiceException e) {
+			System.err.println(e.getClass().getName());
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testReduce() {
+		try {
+			Integer cid = 1;
+			Integer uid = 1;
+			String username = "root";
+			Integer num = service.reduce(cid, uid, username);
+			System.err.println("num:"+num);
+			System.err.println("OK.");
+		} catch (ServiceException e) {
+			System.err.println(e.getClass().getName());
+			System.err.println(e.getMessage());
+		}
+	}
 }

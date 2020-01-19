@@ -21,7 +21,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/top.css" />
 		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
 		<link rel="stylesheet" type="text/css" href="../css/cart.css" />
-		<script src="../js/cart.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -279,8 +278,8 @@
 				showCart();
 				
 				//绑定加减数量
-				$("#cart-list").on("click",".add-num",addNum);
-				$("#cart-list").on("click",".reduce-num",reduceNum);
+				$("#cart-list").on("click",".add-num",increase);
+				$("#cart-list").on("click",".reduce-num",reduce);
 			});
 			
 			/** 展示用户购物车所有商品 */
@@ -296,11 +295,13 @@
 						$("#cart-list").empty();
 						for (var i = 0; i < list.length; i++) {
 							let cart = cartTemplate.replace('[title]',list[i].title);
-							cart = cart.replace('[price]',list[i].price);
-							cart = cart.replace('[num]',list[i].num);
-							cart = cart.replace('[image]',list[i].image);
+							cart = cart.replace(/\[price\]/g,list[i].price);
+							cart = cart.replace(/\[num\]/g,list[i].num);
+							cart = cart.replace(/\[image\]/g,list[i].image);
+							cart = cart.replace(/\[total\]/g,list[i].price*list[i].num);
+							cart = cart.replace(/\[cid\]/g,list[i].cid);
 							cart = $(cart);
-							cart.data("gid",list[i].gid)
+							cart.data("cid",list[i].cid);
 							$("#cart-list").append(cart);
 						}
 					}
@@ -308,51 +309,49 @@
 			}
 			
 			/** 按加号数量增 */
-			function addNum(e){
+			function increase(e){
 				var event = e || window.event;
 				var target = event.target || event.srcElement;
-				let btnPrice = $(target).prev();
 				let cart = $(target).parent().parent();
+				let cid = cart.data("cid");
 				$.ajax({
-					"url":"/carts/add_to_cart",
-					"data":{
-						"gid":cart.data("gid"),
-						"num":1
-					},
+					"url":"/carts/"+cid+"/increase",
+					"data":null,
 					"type":"POST",
 					"dataType":"json",
 					"success":function(data){
 						if(data.state == 0){
-							btnPrice.val(parseInt(btnPrice.val()) + 1);
+							let num = data.data;
+							$("#inp-num-"+cid).val(parseInt(num));
+							$("#goods-total-"+cid).html(parseFloat($("#goods-price-"+cid).html())*num);
 						}
 					},
 					"error":function(){
-						alert("您尚未登录，或登录超时！")
+						alert("login timeout!")
 					}
 				});
 			}
 			
 			/** 按减号数量减 */
-			function reduceNum(e){
+			function reduce(e){
 				var event = e || window.event;
 				var target = event.target || event.srcElement;
-				let btnPrice = $(target).next();
 				let cart = $(target).parent().parent();
+				let cid = cart.data("cid");
 				$.ajax({
-					"url":"/carts/add_to_cart",
-					"data":{
-						"gid":cart.data("gid"),
-						"num":"-1"
-					},
+					"url":"/carts/"+cid+"/reduce",
+					"data":null,
 					"type":"POST",
 					"dataType":"json",
 					"success":function(data){
 						if(data.state == 0){
-							btnPrice.val(parseInt(btnPrice.val()-1));
+							let num = data.data;
+							$("#inp-num-"+cid).val(parseInt(num));
+							$("#goods-total-"+cid).html(parseFloat($("#goods-price-"+cid).html())*num);
 						}
 					},
 					"error":function(){
-						alert("您尚未登录，或登录超时！")
+						alert("login timeout!");
 					}
 				});
 			}
@@ -363,13 +362,13 @@
 								+'</td>'
 								+'<td><img src="..[image]collect.png" class="img-responsive" /></td>'
 								+'<td>[title]</td>'
-								+'<td>¥<span>[price]</span></td>'
+								+'<td>¥<span id="goods-price-[cid]">[price]</span></td>'
 								+'<td>'
 									+'<input type="button" value="-" class="num-btn reduce-num" />'
-									+'<input type="text" size="2" readonly="readonly" class="num-text" value="[num]">'
+									+'<input id="inp-num-[cid]" type="text" size="2" readonly="readonly" class="num-text" value="[num]">'
 									+'<input class="num-btn add-num" type="button" value="+"/>'
 								+'</td>'
-								+'<td><span></span></td>'
+								+'<td>¥<span id="goods-total-[cid]">[total]</span></td>'
 								+'<td>'
 									+'<input type="button" class="cart-del btn btn-default btn-xs" value="删除" />'
 								+'</td>'

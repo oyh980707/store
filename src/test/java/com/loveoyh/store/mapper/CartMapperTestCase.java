@@ -60,4 +60,12 @@ public class CartMapperTestCase {
 		}
 		System.err.println("END.");
 	}
+	
+	@Test
+	public void testFindByCid() {
+		Integer cid = 2;
+		Cart cart = mapper.findByCid(cid);
+		System.err.println("cart:"+cart);
+		System.err.println("END.");
+	}
 }

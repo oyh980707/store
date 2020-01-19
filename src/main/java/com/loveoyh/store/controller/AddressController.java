@@ -29,7 +29,9 @@ public class AddressController extends BaseController{
 		// 调用业务层对象执行增加
 		addressService.addnew(address, uid, username);
 		// 响应成功
-		return new JsonResult<Void>(SUCCESS);
+		JsonResult<Void> jr =  new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@GetMapping("/")
@@ -45,7 +47,10 @@ public class AddressController extends BaseController{
 		String username = getUsernameFromSession(session);
 		Integer uid = getUidFromSession(session);
 		addressService.setDefault(aid, uid, username);
-		return new JsonResult<Void>(SUCCESS);
+		
+		JsonResult<Void> jr =  new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@RequestMapping("{aid}/delete")

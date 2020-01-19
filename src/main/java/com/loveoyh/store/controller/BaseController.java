@@ -13,6 +13,7 @@ import com.loveoyh.store.controller.ex.FileUploadIOException;
 import com.loveoyh.store.controller.ex.FileUploadStateException;
 import com.loveoyh.store.service.ex.AccessDeniedException;
 import com.loveoyh.store.service.ex.AddressCountLimitException;
+import com.loveoyh.store.service.ex.CartNotFoundException;
 import com.loveoyh.store.service.ex.DeleteException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.PasswordNotMatchException;
@@ -43,6 +44,9 @@ public abstract class BaseController {
 		}else if(e instanceof PasswordNotMatchException){
 			//4003-密码不匹配
 			jr.setState(4003);
+		}else if(e instanceof CartNotFoundException){
+			//4004-购物车不匹配
+			jr.setState(4004);
 		}else if(e instanceof AddressCountLimitException){
 			//4004-地址数量范围异常类
 			jr.setState(4004);

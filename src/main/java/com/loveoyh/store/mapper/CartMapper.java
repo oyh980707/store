@@ -22,16 +22,6 @@ public interface CartMapper {
 	public Integer insert(Cart cart);
 	
 	/**
-	 * 修改购物车中商品的数量
-	 * @param cid 购物车id
-	 * @param num 商品数量
-	 * @param modifiedUser 修改用户
-	 * @param modifiedTime 修改时间
-	 * @return 受影响的行数
-	 */
-	public Integer updateNum(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
-	
-	/**
 	 * 根据用户id和商品id查询购物车数据
 	 * @param uid 用户id
 	 * @param gid 商品id
@@ -45,4 +35,22 @@ public interface CartMapper {
 	 * @return 购物车相关数据，通过类CartVO携带数据
 	 */
 	public List<CartVO> findByUid(Integer uid);
+	
+	/**
+	 * 通过购物车id查询有关显示购物车相关的数据
+	 * @param cid 购物车数据id
+	 * @return 匹配购物车数据，如果没有匹配的数据则返回null
+	 */
+	public Cart findByCid(Integer cid);
+
+	/**
+	 * 修改购物车中商品的数量
+	 * @param cid 购物车id
+	 * @param num 商品数量
+	 * @param modifiedUser 修改用户
+	 * @param modifiedTime 修改时间
+	 * @return 受影响的行数
+	 */
+	public Integer updateNum(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
+	
 }

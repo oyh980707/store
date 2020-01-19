@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,9 @@ public class CartController extends BaseController {
 		// 调用业务层对象执行加入购物车
 		cartService.addToCart(cart, uid, username);
 		
-		return new JsonResult<Void>(SUCCESS);
+		JsonResult<Void> jr = new JsonResult<Void>();
+		jr.setState(SUCCESS);
+		return jr;
 	}
 	
 	@GetMapping("/")
@@ -42,5 +45,31 @@ public class CartController extends BaseController {
 		List<CartVO> list = cartService.getByUid(uid);
 		
 		return new JsonResult<List<CartVO>>(list);
+	}
+	
+	@RequestMapping("{cid}/increase")
+	public JsonResult<Integer> increase(@PathVariable("cid") Integer cid,HttpSession session){
+		// 从Session中获取username
+		Integer uid = getUidFromSession(session);
+		String username = getUsernameFromSession(session);
+		
+		Integer num = cartService.increase(cid, uid, username);
+		
+		JsonResult<Integer> jr =  new JsonResult<Integer>(SUCCESS);
+		jr.setData(num);
+		return jr;
+	}
+	
+	@RequestMapping("{cid}/reduce")
+	public JsonResult<Integer> reduce(@PathVariable("cid") Integer cid,HttpSession session){
+		// 从Session中获取username
+		Integer uid = getUidFromSession(session);
+		String username = getUsernameFromSession(session);
+		
+		Integer num = cartService.reduce(cid, uid, username);
+		
+		JsonResult<Integer> jr =  new JsonResult<Integer>(SUCCESS);
+		jr.setData(num);
+		return jr;
 	}
 }

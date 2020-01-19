@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.vo.CartVO;
+import com.loveoyh.store.service.ex.AccessDeniedException;
+import com.loveoyh.store.service.ex.CartNotFoundException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.UpdateException;
 
@@ -29,5 +31,29 @@ public interface CartService {
 	 * @return 购物车相关数据，通过类CartVO携带数据
 	 */
 	public List<CartVO> getByUid(Integer uid);
+	
+	/**
+	 * 购物车商品增加数量（num += 1）
+	 * @param cid 购物车id
+	 * @param uid 用户id
+	 * @param username 用户名
+	 * @return 商品的数量num
+	 * @throws CartNotFoundException
+	 * @throws AccessDeniedException
+	 * @throws UpdateException
+	 */
+	public Integer increase(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
+	
+	/**
+	 * 购物车商品减少数量（num -= 1）
+	 * @param cid 购物车id
+	 * @param uid 用户id
+	 * @param username 用户名
+	 * @return 商品的数量num
+	 * @throws CartNotFoundException
+	 * @throws AccessDeniedException
+	 * @throws UpdateException
+	 */
+	public Integer reduce(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
 	
 }
