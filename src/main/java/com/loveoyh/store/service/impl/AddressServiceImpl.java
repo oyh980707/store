@@ -90,6 +90,14 @@ public class AddressServiceImpl implements AddressService {
 	}
 	
 	/**
+	 * 根据收货地址id查询详情
+	 */
+	@Override
+	public Address getByAid(Integer aid) {
+		return findByAid(aid);
+	}
+	
+	/**
 	 * 修改默认收货地址业务流程：(事务操作)
 	 * 1.根据aid查询收货地址数据，判断结果是否为null
 	 * 	是：抛出AddressNotFoundException
@@ -201,4 +209,5 @@ public class AddressServiceImpl implements AddressService {
 	private Address findLastModified(Integer uid){
 		return addressMapper.findLastModified(uid);
 	}
+
 }

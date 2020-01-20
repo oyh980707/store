@@ -111,12 +111,12 @@
 					</div>
 				</div>
 				<div class="col-md-12">
-					<form role="form">
+					<form action="/orders/create" role="form">
 						<div class="form-group">
 							<label for="name">
 								<p>选择收货地址：</p>
 							</label>
-							<select id="address-list" class="form-control">
+							<select id="address-list" name="aid" class="form-control">
 								<option>八戒&nbsp;&nbsp;&nbsp;家&nbsp;&nbsp;&nbsp;北京市房山区高老庄3排6号&nbsp;&nbsp;&nbsp;1380***1234</option>
 								<option>八戒&nbsp;&nbsp;&nbsp;公司&nbsp;&nbsp;&nbsp;北京市海淀区中关村中路1号1001室&nbsp;&nbsp;&nbsp;1380***1234</option>
 								<option>八戒&nbsp;&nbsp;&nbsp;宿舍&nbsp;&nbsp;&nbsp;北京市海淀区永丰镇30号&nbsp;&nbsp;&nbsp;1380***1234</option>
@@ -160,7 +160,7 @@
 						</div>
 						<div class="pay-bar">
 							<a href="cart.html">返回购物车</a>
-							<span class="pull-right"><input type="button" value="在线支付" class="btn btn-primary btn-lg link-pay"/></span>
+							<span class="pull-right"><input type="submit" value="在线支付" class="btn btn-primary btn-lg link-pay"/></span>
 						</div>
 					</form>
 				</div>
@@ -275,7 +275,7 @@
 					$("#address-list").empty();
 					for (var i = 0; i < list.length; i++) {
 						let address = addressTemp.replace(/\[tag]/g,list[i].tag);
-						address = address.replace(/\[aid\]/g,list[i].name);
+						address = address.replace(/\[aid\]/g,list[i].aid);
 						address = address.replace(/\[name]/g,list[i].name);
 						address = address.replace(/\[address]/g,list[i].provinceName+list[i].cityName+list[i].address);
 						address = address.replace(/\[phone]/g,list[i].phone);
@@ -315,6 +315,8 @@
 						cart = $(cart);
 						cart.data("cid",list[i].cid);
 						$("#cart-list").append(cart);
+						
+						allTotal += list[i].price*list[i].num;
 					}
 					
 					$("#selectCount").html(list.length);
@@ -324,11 +326,11 @@
 		}
 		
 		/** 收货地址模板 */
-		let addressTemp = '<option value="[cid]">[name]&nbsp;&nbsp;&nbsp;[tag]&nbsp;&nbsp;&nbsp;[address]&nbsp;&nbsp;&nbsp;[phone]</option>';
+		let addressTemp = '<option value="[aid]">[name]&nbsp;&nbsp;&nbsp;[tag]&nbsp;&nbsp;&nbsp;[address]&nbsp;&nbsp;&nbsp;[phone]</option>';
 		
 		let cartTemp = '<tr>'
 						+'<td><img src="..[image]collect.png" class="img-responsive" /></td>'
-						+'<td>[title]</td>'
+						+'<td><input type="hidden" name="cids" value="[cid]">[title]</td>'
 						+'<td>¥<span>[price]</span></td>'
 						+'<td>[num]</td>'
 						+'<td>¥<span>[total-price]</span></td>'

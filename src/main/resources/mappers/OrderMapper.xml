@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.loveoyh.store.mapper.OrderMapper">
+	<!-- 插入订单数据 -->
+	<!-- Integer insertOrder(Order order) -->
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="oid">
+		INSERT INTO o_order(
+			uid, recv_name,
+			recv_phone, recv_address,
+			total_price, state,
+			order_time, pay_time,
+			created_user, created_time,
+			modified_user, modified_time
+		) VALUES(
+			#{uid}, #{recvName},
+			#{recvPhone}, #{recvAddress},
+			#{totalPrice}, #{state},
+			#{orderTime}, #{payTime},
+			#{createdUser}, #{createdTime},
+			#{modifiedUser}, #{modifiedTime}
+		)
+	</insert>
+	
+	<!-- 插入订单商品数据 -->
+	<!-- Integer insertOrderItem(OrderItem orderItem) -->
+	<insert id="insertOrderItem" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO o_order_item (
+			oid, gid,
+			title, image,
+			price, num,
+			created_user, created_time,
+			modified_user, modified_time
+		) VALUES (
+			#{oid}, #{gid},
+			#{title}, #{image},
+			#{price}, #{num},
+			#{createdUser}, #{createdTime},
+			#{modifiedUser}, #{modifiedTime}
+		)
+	</insert>
+	
+</mapper>

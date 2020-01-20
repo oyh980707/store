@@ -98,6 +98,12 @@
 	<select id="findByAid" resultType="com.loveoyh.store.entity.Address">
 		SELECT
 			uid,
+			name,
+			province_name as provinceName,
+			city_name as cityName,
+			area_name as areaName,
+			address,
+			phone,
 			is_default as isDefault
 		FROM
 			o_address

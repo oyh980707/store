@@ -59,4 +59,11 @@ public interface AddressService {
 	 * @throws DeleteException
 	 */
 	public void delete(Integer aid,Integer uid,String username) throws AddressNotFoundException,AccessDeniedException,DeleteException;
+	
+	/**
+	 * 根据收货地址的数据id查询详情
+	 * @param aid 收货地址的数据id
+	 * @return 匹配的收货地址的详情，如果没有匹配的数据，则返回null
+	 */
+	public Address getByAid(Integer aid);
 }
