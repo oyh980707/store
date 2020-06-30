@@ -58,7 +58,48 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<!--使用${environment}获取值-->
+				<environment>dev</environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>stg</id>
+			<properties>
+				<environment>stg</environment>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<environment>prod</environment>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
+		<finalName>oyh-store-${environment}</finalName>
+		<resources>
+			<!--排除环境配置文件-->
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>application-*.yml</exclude>
+				</excludes>
+			</resource>
+
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<!-- 打包时包含的文件 -->
+				<includes>
+					<include>application-${environment}.yml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

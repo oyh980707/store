@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: stg
+log:
+  path: ./logs
+  level: debug

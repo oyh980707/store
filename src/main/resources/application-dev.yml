@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: dev
+log:
+  path: ./logs
+  level: debug

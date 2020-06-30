@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60" debug="true">
+
+    <contextName>oyh_store</contextName>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <!--<property name="LOG_HOME" value="." />-->
+
+    <!--application.yml 传递参数，不能使用logback 自带的<property>标签 -->
+    <springProperty scope="context" name="path" source="log.path"/>
+    <springProperty scope="context" name="level" source="log.level"/>
+
+    <!--输出到控制台 STDOUT-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--展示格式 layout-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--格式化输出：%d表示日期，%contextName 上面引用的项目名，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{150} - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!--输出到文件 FILE-->
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 文件位置 log.path 配制于yml中 -->
+        <file>${path}/oyh-store.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${path}/oyh-store-log.%d{yyyy-MM-dd}.log.tar.gz</FileNamePattern>
+            <!-- 30 days -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{150} - %msg%n</pattern>
+        </encoder>
+        <!--日志文件最大的大小-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!--指定最基础的日志输出级别-->
+    <!--<root level="INFO">
+        &lt;!&ndash;appender将会添加到这个logger&ndash;&gt;
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>-->
+
+    <!--com.loveoyh.store：包或类的全路径，该路径下的日志级别为DEBUG -->
+    <!--<logger name="com.loveoyh.store" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>-->
+
+    <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+    <springProfile name="dev,stg">
+        <logger name="com.loveoyh.store" level="${level}" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+    </springProfile>
+
+    <!-- 生产环境. -->
+    <springProfile name="prod">
+        <logger name="com.loveoyh.store" level="${level}" additivity="false">
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+</configuration>
