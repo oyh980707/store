@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="60" debug="true">
+
+<configuration scan="false" scanPeriod="60 seconds" debug="true">
 
     <contextName>oyh_store</contextName>
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->

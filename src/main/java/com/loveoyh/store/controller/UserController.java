@@ -9,6 +9,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,8 @@ import com.loveoyh.store.util.JsonResult;
 @RestController
 @RequestMapping("users")
 public class UserController extends BaseController{
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	/** 上传允许的头像类型 */
 	public static final List<String> AVATAR_CONTENT_TYPE = new ArrayList<String>();
 	/** 上传头像的最大大小 */
@@ -133,6 +137,7 @@ public class UserController extends BaseController{
 		String filename = UUID.randomUUID().toString() + suffix;
 		//执行保存
 		File dest = new File(dir,filename);
+		logger.debug("上传路径[{}]文件[{}]",dir,dest.getName());
 		try {
 			file.transferTo(dest);
 		} catch (IllegalStateException e) {

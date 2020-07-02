@@ -11,7 +11,7 @@
 	<groupId>com.loveoyh</groupId>
 	<artifactId>store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>store</name>
 	<description>Demo project for Spring Boot</description>
 
