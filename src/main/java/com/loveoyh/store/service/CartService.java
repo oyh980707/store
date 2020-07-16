@@ -1,13 +1,13 @@
 package com.loveoyh.store.service;
 
-import java.util.List;
-
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.service.ex.AccessDeniedException;
 import com.loveoyh.store.service.ex.CartNotFoundException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.UpdateException;
+
+import java.util.List;
 
 /**
  * 处理购物车数据接口
@@ -23,14 +23,14 @@ public interface CartService {
 	 * @throws InsertException
 	 * @throws UpdateException
 	 */
-	public void addToCart(Cart cart, Integer uid, String username) throws InsertException, UpdateException;
+	void addToCart(Cart cart, Integer uid, String username) throws InsertException, UpdateException;
 	
 	/**
 	 * 通过用户id查询有关显示购物车相关的数据
 	 * @param uid 用户id
 	 * @return 购物车相关数据，通过类CartVO携带数据
 	 */
-	public List<CartVO> getByUid(Integer uid);
+	List<CartVO> getByUid(Integer uid);
 	
 	/**
 	 * 购物车商品增加数量（num += 1）
@@ -42,7 +42,7 @@ public interface CartService {
 	 * @throws AccessDeniedException
 	 * @throws UpdateException
 	 */
-	public Integer increase(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
+	Integer increase(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
 	
 	/**
 	 * 购物车商品减少数量（num -= 1）
@@ -54,7 +54,7 @@ public interface CartService {
 	 * @throws AccessDeniedException
 	 * @throws UpdateException
 	 */
-	public Integer reduce(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
+	Integer reduce(Integer cid,Integer uid,String username) throws CartNotFoundException,AccessDeniedException,UpdateException;
 	
 	/**
 	 * 通过多个购物车id查询有关显示购物车相关的数据集合
@@ -62,6 +62,6 @@ public interface CartService {
 	 * @param uid 用户id
 	 * @return匹配购物车数据集合，如果没有匹配的数据则返回null
 	 */
-	public List<CartVO> getByCids(Integer[] cids, Integer uid);
+	List<CartVO> getByCids(Integer[] cids, Integer uid);
 	
 }

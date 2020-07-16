@@ -1,7 +1,5 @@
 package com.loveoyh.store.mapper;
 
-import org.springframework.stereotype.Service;
-
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.entity.OrderItem;
 

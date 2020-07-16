@@ -363,7 +363,7 @@
 	 * 
 	 * @param <T> 向客户端响应的数据的类型
 	 */
-	public class JsonResult<T> {
+	public class JsonResult {
 		/** 表示成功状态标志 */
 		public static final int SUCCESS = 0;
 		/** 表示出错状态标志 */
@@ -397,8 +397,8 @@
 	public class BaseController {
 	
 		@ExceptionHandler(ServiceException.class)
-		public JsonResult<Void> handleException(Throwable e) {
-			JsonResult<Void> jr = new JsonResult<Void>();
+		public JsonResult handleException(Throwable e) {
+			JsonResult jr = new JsonResult();
 			jr.setMessage(e.getMessage());
 	
 			if (e instanceof UsernameDuplicateException) {
@@ -419,18 +419,18 @@
 	请求路径：/users/reg
 	请求参数：User user
 	请求类型：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **6.3. 处理请求**
 
 创建`com.loveoyh.store.controller.UserController`控制器类，继承自`BaseController`，添加`@RestController`和`@RequestMapping("users")`注解，并在类中添加`@Autowired private IUserService userService;`业务层对象，并在类中添加处理请求的方法：
 
 	@ReuqestMapping("reg")
-	public JsonResult<Void> reg(User user) {
+	public JsonResult reg(User user) {
 		// 执行注册
 		userService.reg(user);
 		// 返回成功
-		JsonResult<Void> jr = new JsonResult<Void>();
+		JsonResult jr = new JsonResult();
 		jr.setState(1);
 		return jr;
 	}
@@ -586,7 +586,7 @@
 	请求路径：/users/login
 	请求参数：String username, String password, HttpSession session
 	请求方式：POST
-	响应数据：JsonResult<User>
+	响应数据：JsonResult
 
 通常，请求路径中，后半部分表示当前功能的名称，可以与业务层方法的名称保持一致！
 
@@ -595,7 +595,7 @@
 在`UserController`添加处理请求的方法：
 
 	@RequestMapping("login")
-	public JsonResult<User> login(
+	public JsonResult login(
 		String username, String password,
 		HttpSession session) {
 		// 执行登录，获取登录返回结果
@@ -799,12 +799,12 @@ $(document).ready(function(){
 	请求路径：/users/change_password
 	请求参数：String oldPassword, String newPassword, HttpSession session
 	请求方式：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
 	@RequestMapping("change_password")
-	public JsonResult<Void> changePassword(
+	public JsonResult changePassword(
 		@RequestParam("old_password") String oldPassword, 
 		@RequestParam("new_password") String newPassword, 
 		HttpSession session) {
@@ -1120,14 +1120,14 @@ $(document).ready(function(){
 	请求路径：/users/get_info
 	请求参数：HttpSession session
 	请求方式：GET
-	响应数据：JsonResult<User>
+	响应数据：JsonResult
 
 关于执行修改个人信息的请求：
 
 	请求路径：/users/change_info
 	请求参数：User user, HttpSession session
 	请求方式：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
@@ -1154,7 +1154,7 @@ $(document).ready(function(){
 然后，在`UserController`中处理请求：
 
 	@GetMapping("get_info")
-	public JsonResult<User> getByUid(
+	public JsonResult getByUid(
 			HttpSession session) {
 		// 从session中获取uid
 		Integer uid = getUidFromSession(session);
@@ -1165,7 +1165,7 @@ $(document).ready(function(){
 	}
 	
 	@RequestMapping("change_info")
-	public JsonResult<Void> changeInfo(
+	public JsonResult changeInfo(
 		User user, HttpSession session) {
 		// 从session中获取uid和username
 		Integer uid = getUidFromSession(session);
@@ -1331,7 +1331,7 @@ $(document).ready(function(){
 	请求路径：/users/change_avatar
 	请求参数：HttpServletRequest request, MultipartFile file
 	请求类型：POST
-	响应数据：JsonResult<String>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
@@ -1347,7 +1347,7 @@ $(document).ready(function(){
 	}
 	
 	@PostMapping("change_avatar")
-	public JsonResult<String> changeAvatar(
+	public JsonResult changeAvatar(
 		HttpServletRequest request, 
 		@RequestParam("file") MultipartFile file) {
 		// 检查文件是否为空
@@ -1393,7 +1393,7 @@ $(document).ready(function(){
 		userService.changeAvatar(uid, username, avatar);
 	
 		// 返回
-		JsonResult<String> jr = new JsonResult<String>();
+		JsonResult jr = new JsonResult();
 		jr.setState(SUCCESS);
 		jr.setData(avatar);
 		return jr;
@@ -1696,7 +1696,7 @@ $(document).ready(function(){
 	请求路径：/addresses/addnew
 	请求参数：Address address, HttpSession session
 	请求类型：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
@@ -1714,7 +1714,7 @@ $(document).ready(function(){
 然后，在类中添加处理请求的方法：
 
 	@RequestMapping("addnew")
-	public JsonResult<Void> addnew(
+	public JsonResult addnew(
 		Address address, HttpSession session) {
 		// 从Session中获取uid和username
 		// 调用业务层对象执行增加
@@ -1882,7 +1882,7 @@ $(document).ready(function(){
 	请求路径：/districts/
 	请求参数：String parent
 	请求类型：GET
-	响应数据：JsonResult<List<District>>
+	响应数据：JsonResult
 	是否拦截：否，不拦截，需要在登录拦截器的配置中添加白名单
 
 **c. 处理请求**
@@ -1899,9 +1899,9 @@ $(document).ready(function(){
 		private IDistrictService districtService;
 		
 		@GetMapping("/")
-		public JsonResult<List<District>> getByParent(String parent) {
+		public JsonResult getByParent(String parent) {
 			List<District> data = districtService.getByParent(parent);
-			return new JsonResult<List<District>>(SUCCESS, data);
+			return new JsonResult(SUCCESS, data);
 		}
 		
 	}
@@ -2127,12 +2127,12 @@ $(document).ready(function(){
 	请求路径：/addresses/
 	请求参数：HttpSession session
 	请求类型：GET
-	响应数据：JsonResult<List<Address>>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
 	@GetMapping("/")
-	public JsonResult<List<Address>> getByUid(
+	public JsonResult getByUid(
 			HttpSession session) {
 		// 从session中获取uid
 		Integer uid = getUidFromSession(session);
@@ -2410,12 +2410,12 @@ $(document).ready(function(){
 	请求路径：/addresses/{aid}/set_default
 	请求参数：@PathVariable("aid") Integer aid, HttpSession session
 	请求类型：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
 	@RequestMapping("{aid}/set_default")
-	public JsonResult<Void> setDefault(
+	public JsonResult setDefault(
 		@PathVariable("aid") Integer aid, HttpSession session) {
 		// 从Session中获取uid和username
 		Integer uid = getUidFromSession(session);
@@ -2684,16 +2684,16 @@ $(document).ready(function(){
 	请求路径：/addresses/{aid}/delete
 	请求参数：@PathVariable("aid") Integer aid, HttpSession session
 	请求类型：POST
-	响应数据：JsonResult<Void>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
 	@RequestMapping("{aid}/delete")
-	public JsonResult<Void> delete(@PathVariable("aid") Integer aid,HttpSession session){
+	public JsonResult delete(@PathVariable("aid") Integer aid,HttpSession session){
 	    String username = getUsernameFromSession(session);
 	    Integer uid = getUidFromSession(session);
 	    addressService.delete(aid, uid, username);
-	    return new JsonResult<Void>();
+	    return new JsonResult();
 	}
 
 ### 47. 收货地址-删除-前端页面
@@ -2868,7 +2868,7 @@ $(document).ready(function(){
 然后，在控制器类中添加处理请求的方法：
 
 	@GetMapping("hot")
-	public JsonResult<List<Goods>> getHotList() {
+	public JsonResult getHotList() {
 		// 调用业务层对象获取数据
 		// 返回
 	}
@@ -2996,7 +2996,7 @@ $(document).ready(function(){
 需要在`GoodsController`中添加处理请求的方法：
 
 	@GetMapping("{id}/details")
-	public JsonResult<Goods> getById(
+	public JsonResult getById(
 		@PathVariable("id") Long id) {
 		// 调用业务层对象获取数据
 		Goods data = goodsService.getById(id);
@@ -3363,7 +3363,7 @@ $(document).ready(function(){
 然后，在控制器类中添加处理请求的方法：
 
 	@RequestMapping("add_to_cart")
-	public JsonResult<Void> addToCart(Cart cart, HttpSession session) {
+	public JsonResult addToCart(Cart cart, HttpSession session) {
 		// 从Session中获取uid和username
 		Integer uid = getUidFromSession(session);
 		String username = getUsernameFromSession(session);
@@ -3511,12 +3511,12 @@ $(document).ready(function(){
 	请求路径：/carts/
 	请求参数：HttpSession session
 	请求类型：GET
-	响应数据：JsonResult<List<CartVO>>
+	响应数据：JsonResult
 
 **c. 处理请求**
 
 	@GetMapping("/")
-	public JsonResult<List<CartVO>> getByUid(
+	public JsonResult getByUid(
 			HttpSession session) {
 		// 从session中获取uid
 		Integer uid = getUidFromSession(session);
@@ -3738,7 +3738,7 @@ $(document).ready(function(){
 然后，在`CartController`中添加处理请求的方法：
 
 	@RequestMapping("{cid}/add")
-	public JsonResult<Integer> add(
+	public JsonResult add(
 		@PathVariable("cid") Integer cid,
 		HttpSession session) {
 		// 从session中获取uid和username
@@ -3910,7 +3910,7 @@ $(document).ready(function(){
 直接在`CartController`中添加处理请求的方法：
 
 	@GetMapping("get_by_cids")
-	public JsonResult<List<CartVO>> getByCids(
+	public JsonResult getByCids(
 		Integer[] cids, HttpSession session) {
 		// 从session中获取uid
 		Integer uid = getUidFromSession(session);
@@ -4300,7 +4300,7 @@ $(document).ready(function(){
 然后，在类中添加处理请求的方法：
 
 	@RequestMapping("create")
-	public JsonResult<Order> create(
+	public JsonResult create(
 		Integer aid, Integer[] cids, HttpSession session) {
 		// 从Session中获取uid和username
 		Integer uid = getUidFromSession(session);

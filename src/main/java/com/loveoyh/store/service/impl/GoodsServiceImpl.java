@@ -1,17 +1,12 @@
 package com.loveoyh.store.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import com.loveoyh.store.entity.Goods;
+import com.loveoyh.store.mapper.GoodsMapper;
+import com.loveoyh.store.service.GoodsService;
 import org.springframework.stereotype.Service;
 
-import com.loveoyh.store.entity.District;
-import com.loveoyh.store.entity.Goods;
-import com.loveoyh.store.mapper.DistrictMapper;
-import com.loveoyh.store.mapper.GoodsMapper;
-import com.loveoyh.store.service.DistrictService;
-import com.loveoyh.store.service.GoodsService;
+import javax.annotation.Resource;
+import java.util.List;
 /**
  * 处理商品数据业务类
  * @author oyh

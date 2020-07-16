@@ -1,21 +1,15 @@
 package com.loveoyh.store.service.impl;
 
-import java.util.Date;
-import java.util.UUID;
-
-import org.apache.ibatis.annotations.Mapper;
+import com.loveoyh.store.entity.User;
+import com.loveoyh.store.mapper.UserMapper;
+import com.loveoyh.store.service.UserService;
+import com.loveoyh.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import com.loveoyh.store.entity.User;
-import com.loveoyh.store.mapper.UserMapper;
-import com.loveoyh.store.service.UserService;
-import com.loveoyh.store.service.ex.InsertException;
-import com.loveoyh.store.service.ex.PasswordNotMatchException;
-import com.loveoyh.store.service.ex.UpdateException;
-import com.loveoyh.store.service.ex.UserNotFoundException;
-import com.loveoyh.store.service.ex.UsernameDuplicateException;
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService { 
@@ -223,11 +217,5 @@ public class UserServiceImpl implements UserService {
 		}
 		return str;
 	}
-
-	
-
-	
-
-	
 
 }

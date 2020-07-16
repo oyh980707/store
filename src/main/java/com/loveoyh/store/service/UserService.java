@@ -1,11 +1,7 @@
 package com.loveoyh.store.service;
 
 import com.loveoyh.store.entity.User;
-import com.loveoyh.store.service.ex.InsertException;
-import com.loveoyh.store.service.ex.PasswordNotMatchException;
-import com.loveoyh.store.service.ex.UpdateException;
-import com.loveoyh.store.service.ex.UserNotFoundException;
-import com.loveoyh.store.service.ex.UsernameDuplicateException;
+import com.loveoyh.store.service.ex.*;
 
 /**
  * 处理用户数据的业务层接口
@@ -19,7 +15,7 @@ public interface UserService {
 	 * @throws UsernameDuplicateException
 	 * @throws InsertException
 	 */
-	public void reg(User user) throws UsernameDuplicateException,InsertException;
+	void reg(User user) throws UsernameDuplicateException,InsertException;
 	
 	/**
 	 * 用户登录
@@ -29,7 +25,7 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws PasswordNotMatchException
 	 */
-	public User login(String username,String password) throws UserNotFoundException,PasswordNotMatchException;
+	User login(String username,String password) throws UserNotFoundException,PasswordNotMatchException;
 	
 	/**
 	 * 更新用户密码
@@ -41,14 +37,14 @@ public interface UserService {
 	 * @throws PasswordNotMatchException
 	 * @throws UpdateException
 	 */
-	public void changePassword(Integer uid, String username, String oldPassword, String newPassword) throws UserNotFoundException, PasswordNotMatchException, UpdateException;
+	void changePassword(Integer uid, String username, String oldPassword, String newPassword) throws UserNotFoundException, PasswordNotMatchException, UpdateException;
 	
 	/**
 	 * 获取用户数据
 	 * @param uid 用户id
 	 * @return
 	 */
-	public User getByUid(Integer uid);
+	User getByUid(Integer uid);
 	
 	/**
 	 * 更新用户信息
@@ -56,7 +52,7 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 * @throws UpdateException
 	 */
-	public void changeInfo(User user) throws UserNotFoundException,UpdateException;
+	void changeInfo(User user) throws UserNotFoundException,UpdateException;
 	
 	/**
 	 * 修改头像
@@ -66,6 +62,6 @@ public interface UserService {
 	 * @throws UserNotFoundException 用户数据不存在，或者已经被标记为删除
 	 * @throws UpdateException 更新数据失败
 	 */
-	public void changeAvatar(Integer uid, String username, String avatar) throws UserNotFoundException, UpdateException;
+	void changeAvatar(Integer uid, String username, String avatar) throws UserNotFoundException, UpdateException;
 	
 }

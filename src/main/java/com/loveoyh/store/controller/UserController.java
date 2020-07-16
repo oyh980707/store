@@ -1,32 +1,22 @@
 package com.loveoyh.store.controller;
 
+import com.loveoyh.store.controller.ex.*;
+import com.loveoyh.store.entity.User;
+import com.loveoyh.store.service.UserService;
+import com.loveoyh.store.util.JsonResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.loveoyh.store.controller.ex.FileEmptyException;
-import com.loveoyh.store.controller.ex.FileSizeException;
-import com.loveoyh.store.controller.ex.FileTypeException;
-import com.loveoyh.store.controller.ex.FileUploadIOException;
-import com.loveoyh.store.controller.ex.FileUploadStateException;
-import com.loveoyh.store.entity.User;
-import com.loveoyh.store.service.UserService;
-import com.loveoyh.store.util.JsonResult;
 
 @RestController
 @RequestMapping("users")
@@ -50,46 +40,41 @@ public class UserController extends BaseController{
 	UserService userService;
 	
 	@RequestMapping("reg")
-	public JsonResult<Void> reg(User user){
+	public JsonResult reg(User user){
 		userService.reg(user);
-		
-		JsonResult<Void> jr = new JsonResult<Void>();
-		jr.setState(SUCCESS);
-		return jr;
+		return JsonResult.newInstance();
 	}
 	
 	@RequestMapping("login")
-	public JsonResult<User> login(String username,String password,HttpSession session){
+	public JsonResult login(String username,String password,HttpSession session){
 		User user = userService.login(username, password);
 		
 		session.setAttribute("uid", user.getUid());
 		session.setAttribute("username", user.getUsername());
 		
-		return new JsonResult<User>(user);
+		return JsonResult.newInstance(user);
 	}
 	
 	@GetMapping("get_info")
-	public JsonResult<User> getInfo(HttpSession session){
+	public JsonResult getInfo(HttpSession session){
 		Integer uid = getUidFromSession(session);
 		User user = userService.getByUid(uid);
-		return new JsonResult<User>(user);
+		return JsonResult.newInstance(user);
 	}
 	
 	@RequestMapping("change_password")
-	public JsonResult<Void> changePassword(@RequestParam("old_password") String oldPassword,@RequestParam("new_password") String newPassword,HttpSession session){
+	public JsonResult changePassword(@RequestParam("old_password") String oldPassword,@RequestParam("new_password") String newPassword,HttpSession session){
 		//从session中获取uid和username
 		Integer uid = getUidFromSession(session);
 		String username = getUsernameFromSession(session);
 		//执行修改
 		userService.changePassword(uid, username, oldPassword, newPassword);
 		
-		JsonResult<Void> jr = new JsonResult<Void>();
-		jr.setState(SUCCESS);
-		return jr;
+		return JsonResult.newInstance();
 	}
 	
 	@RequestMapping("change_info")
-	public JsonResult<Void> changeInfo(User user,HttpSession session){
+	public JsonResult changeInfo(User user,HttpSession session){
 		Integer uid = getUidFromSession(session);
 		String username = getUsernameFromSession(session);
 		//设置为修改数据的用户名和id
@@ -97,14 +82,12 @@ public class UserController extends BaseController{
 		user.setUsername(username);
 		
 		userService.changeInfo(user);
-		
-		JsonResult<Void> jr = new JsonResult<Void>();
-		jr.setState(SUCCESS);
-		return jr;
+
+		return JsonResult.newInstance();
 	}
 	
 	@PostMapping("change_avatar")
-	public JsonResult<String> changeAvatar(HttpServletRequest request,@RequestParam("file") MultipartFile file) {
+	public JsonResult changeAvatar(HttpServletRequest request,@RequestParam("file") MultipartFile file) {
 		//检查文件是否为空
 		if(file.isEmpty()) {
 			throw new FileEmptyException("文件为空!");
@@ -155,9 +138,6 @@ public class UserController extends BaseController{
 		userService.changeAvatar(uid, username, avatar);
 		
 		//返回图片地址
-		JsonResult<String> jr = new JsonResult<String>();
-		jr.setState(SUCCESS);
-		jr.setData(avatar);
-		return jr;
+		return JsonResult.newInstance(avatar);
 	}
 }

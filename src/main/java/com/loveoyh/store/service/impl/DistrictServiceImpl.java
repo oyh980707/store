@@ -1,14 +1,12 @@
 package com.loveoyh.store.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.loveoyh.store.entity.District;
 import com.loveoyh.store.mapper.DistrictMapper;
 import com.loveoyh.store.service.DistrictService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class DistrictServiceImpl implements DistrictService{

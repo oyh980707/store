@@ -1,12 +1,11 @@
 package com.loveoyh.store.mapper;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.vo.CartVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 购物车数据接口
@@ -19,7 +18,7 @@ public interface CartMapper {
 	 * @param cart 购物车数据
 	 * @return 受影响的行数
 	 */
-	public Integer insert(Cart cart);
+	Integer insert(Cart cart);
 	
 	/**
 	 * 根据用户id和商品id查询购物车数据
@@ -27,28 +26,28 @@ public interface CartMapper {
 	 * @param gid 商品id
 	 * @return 购物车数据，包含cid和num
 	 */
-	public Cart findByUidAndGid(@Param("uid") Integer uid, @Param("gid") Long gid);
+	Cart findByUidAndGid(@Param("uid") Integer uid, @Param("gid") Long gid);
 	
 	/**
 	 * 通过用户id查询有关显示购物车相关的数据
 	 * @param uid 用户id
 	 * @return 购物车相关数据，通过类CartVO携带数据
 	 */
-	public List<CartVO> findByUid(Integer uid);
+	List<CartVO> findByUid(Integer uid);
 	
 	/**
 	 * 通过购物车id查询有关显示购物车相关的数据
 	 * @param cid 购物车数据id
 	 * @return 匹配购物车数据，如果没有匹配的数据则返回null
 	 */
-	public Cart findByCid(Integer cid);
+	Cart findByCid(Integer cid);
 	
 	/**
 	 * 通过多个购物车id查询有关显示购物车相关的数据集合
 	 * @param cids 多个购物车数据id
 	 * @return匹配购物车数据集合，如果没有匹配的数据则返回null
 	 */
-	public List<CartVO> findByCids(Integer[] cids);
+	List<CartVO> findByCids(Integer[] cids);
 	
 	/**
 	 * 修改购物车中商品的数量
@@ -58,6 +57,6 @@ public interface CartMapper {
 	 * @param modifiedTime 修改时间
 	 * @return 受影响的行数
 	 */
-	public Integer updateNum(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
+	Integer updateNum(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
 	
 }

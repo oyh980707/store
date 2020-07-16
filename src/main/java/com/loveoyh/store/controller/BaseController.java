@@ -1,27 +1,11 @@
 package com.loveoyh.store.controller;
 
-import javax.servlet.http.HttpSession;
-
+import com.loveoyh.store.controller.ex.*;
+import com.loveoyh.store.service.ex.*;
+import com.loveoyh.store.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.loveoyh.store.controller.ex.ControllerException;
-import com.loveoyh.store.controller.ex.FileEmptyException;
-import com.loveoyh.store.controller.ex.FileSizeException;
-import com.loveoyh.store.controller.ex.FileTypeException;
-import com.loveoyh.store.controller.ex.FileUploadException;
-import com.loveoyh.store.controller.ex.FileUploadIOException;
-import com.loveoyh.store.controller.ex.FileUploadStateException;
-import com.loveoyh.store.service.ex.AccessDeniedException;
-import com.loveoyh.store.service.ex.AddressCountLimitException;
-import com.loveoyh.store.service.ex.CartNotFoundException;
-import com.loveoyh.store.service.ex.DeleteException;
-import com.loveoyh.store.service.ex.InsertException;
-import com.loveoyh.store.service.ex.PasswordNotMatchException;
-import com.loveoyh.store.service.ex.ServiceException;
-import com.loveoyh.store.service.ex.UpdateException;
-import com.loveoyh.store.service.ex.UserNotFoundException;
-import com.loveoyh.store.service.ex.UsernameDuplicateException;
-import com.loveoyh.store.util.JsonResult;
+import javax.servlet.http.HttpSession;
 
 /**
  * 基类控制器
@@ -33,8 +17,8 @@ public abstract class BaseController {
 	protected static final Integer SUCCESS = 0;
 	
 	@ExceptionHandler({ServiceException.class,ControllerException.class})
-	public JsonResult<Void> handlerException(Throwable e){
-		JsonResult<Void> jr = new JsonResult<Void>();
+	public JsonResult handlerException(Throwable e){
+		JsonResult jr = new JsonResult();
 		jr.setState(JsonResult.ERROR);
 		if(e instanceof UsernameDuplicateException) {
 			//4001-用户名冲突异常类
