@@ -37,14 +37,30 @@ public class JsonResult<T> {
 	public JsonResult() {
 	}
 	
-	public JsonResult(String message) {
-		state = ERROR;
-		this.message = message;
-	}
-	
 	public JsonResult(T data) {
 		state = SUCCESS;
 		this.data = data;
+	}
+	
+	public JsonResult<T> newInstance(){
+		JsonResult<T> jr = new JsonResult<>();
+		jr.setState(SUCCESS);
+		return jr;
+	}
+	
+	public JsonResult<T> newInstance(T data){
+		JsonResult<T> jr = new JsonResult<>();
+		jr.setState(SUCCESS);
+		jr.setData(data);
+		return jr;
+	}
+	
+	
+	public JsonResult<T> newInstance(int state, String message){
+		JsonResult<T> jr = new JsonResult<>();
+		jr.setState(state);
+		jr.setMessage(message);
+		return jr;
 	}
 	
 	public Integer getState() {

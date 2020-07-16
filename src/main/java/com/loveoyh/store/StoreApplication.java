@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
 
 @SpringBootApplication
-@Configuration
 @MapperScan("com.loveoyh.store.mapper")
 public class StoreApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StoreApplication.class);
