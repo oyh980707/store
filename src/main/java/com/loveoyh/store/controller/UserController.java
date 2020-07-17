@@ -37,7 +37,7 @@ public class UserController extends BaseController{
 	}
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@RequestMapping("reg")
 	public JsonResult reg(User user){
