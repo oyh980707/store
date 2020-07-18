@@ -1,5 +1,6 @@
 package com.loveoyh.store;
 
+import com.loveoyh.store.util.God;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class StoreApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StoreApplication.class, args);
-		LOGGER.info("服务[store]启动成功");
+		LOGGER.info(God.buddhaBless());
 	}
 	
 	@Bean
@@ -33,5 +34,5 @@ public class StoreApplication {
 		
 		return factory.createMultipartConfig();
 	}
-
+	
 }
