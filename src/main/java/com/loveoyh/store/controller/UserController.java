@@ -7,6 +7,7 @@ import com.loveoyh.store.util.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,9 +27,11 @@ public class UserController extends BaseController{
 	/** 上传允许的头像类型 */
 	public static final List<String> AVATAR_CONTENT_TYPE = new ArrayList<String>();
 	/** 上传头像的最大大小 */
-	public static final long AVATAR_MAX_SIZE = 2 * 1024 * 1024;
+	@Value("upload.avatar-max-size")
+	public long avatarMaxSize;
 	/** 上传头像的目录位置 */
-	public static final String AVATAR_DIR = "upload";
+	@Value("upload.avatar-dir")
+	public String avatarDir;
 	
 	static {
 		AVATAR_CONTENT_TYPE.add("image/jpeg");
@@ -94,8 +97,8 @@ public class UserController extends BaseController{
 		}
 		
 		//检查文件大小
-		if(file.getSize() > AVATAR_MAX_SIZE) {
-			throw new FileSizeException("文件过大!，不能超过"+(AVATAR_MAX_SIZE/1024)+"KB");
+		if(file.getSize() > avatarMaxSize) {
+			throw new FileSizeException("文件过大!，不能超过"+(avatarMaxSize/1024)+"KB");
 		}
 		
 		//检查文件类型
@@ -105,7 +108,7 @@ public class UserController extends BaseController{
 		
 		
 		//确定文件夹
-		String dirPath = request.getServletContext().getRealPath(AVATAR_DIR);
+		String dirPath = request.getServletContext().getRealPath(avatarDir);
 		File dir = new File(dirPath);
 		if(!dir.exists()) {
 			dir.mkdirs();
@@ -131,7 +134,7 @@ public class UserController extends BaseController{
 			throw new FileUploadIOException("文件传输中断!");
 		}
 		//更新数据表
-		String avatar = "/"+ AVATAR_DIR +"/"+filename;
+		String avatar = avatarDir +"/"+filename;
 		HttpSession session = request.getSession();
 		Integer uid = getUidFromSession(session);
 		String username = getUsernameFromSession(session);
