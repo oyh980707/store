@@ -28,7 +28,7 @@ public class UserController extends BaseController{
 	public static final List<String> AVATAR_CONTENT_TYPE = new ArrayList<String>();
 	/** 上传头像的最大大小 */
 	@Value("upload.avatar-max-size")
-	public long avatarMaxSize;
+	public String avatarMaxSize;
 	/** 上传头像的目录位置 */
 	@Value("upload.avatar-dir")
 	public String avatarDir;
@@ -85,7 +85,7 @@ public class UserController extends BaseController{
 		user.setUsername(username);
 		
 		userService.changeInfo(user);
-
+		
 		return JsonResult.newInstance();
 	}
 	
@@ -97,8 +97,8 @@ public class UserController extends BaseController{
 		}
 		
 		//检查文件大小
-		if(file.getSize() > avatarMaxSize) {
-			throw new FileSizeException("文件过大!，不能超过"+(avatarMaxSize/1024)+"KB");
+		if(file.getSize() > Long.valueOf(avatarMaxSize)) {
+			throw new FileSizeException("文件过大!，不能超过"+(Long.valueOf(avatarMaxSize)/1024)+"KB");
 		}
 		
 		//检查文件类型
