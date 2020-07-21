@@ -18,8 +18,7 @@ public abstract class BaseController {
 	
 	@ExceptionHandler({ServiceException.class,ControllerException.class})
 	public JsonResult handlerException(Throwable e){
-		JsonResult jr = new JsonResult();
-		jr.setState(JsonResult.ERROR);
+		JsonResult jr = JsonResult.newInstance(JsonResult.ERROR, e.getLocalizedMessage());
 		if(e instanceof UsernameDuplicateException) {
 			//4001-用户名冲突异常类
 			jr.setState(4001);

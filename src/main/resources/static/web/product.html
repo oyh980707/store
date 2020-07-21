@@ -313,7 +313,7 @@
 		/** 添加到购物车 */
 		function addToCart(){
 			$.ajax({
-				"url":"/carts/add_to_cart",
+				"url":"/api/carts/add_to_cart",
 				"data":{
 					"gid":id,
 					"num":$("#num").val()
@@ -334,7 +334,7 @@
 		/** 获取并展示热销商品详情 */
 		function showGoodsDetails(id){
 			$.ajax({
-				"url":"/goods/"+id+"/details",
+				"url":"/api/goods/"+id+"/details",
 				"data":null,
 				"type":"get",
 				"dataType":"json",

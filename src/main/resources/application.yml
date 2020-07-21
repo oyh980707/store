@@ -35,13 +35,14 @@ spring:
     username: root
     password: 980707
 log:
-  path: /upload
+  path: /usr/local/logs
   level: debug
 
 # 上传文件
 upload:
-  avatar-dir: /usr/local/upload
-  avatar-max-size: 2 * 1024 * 1024
+  avatar-dir: /usr/local/developtools/nginx/html
+  # 2 * 1024 * 1024
+  avatar-max-size: 2097152
 
 # 开发环境
 ---
@@ -55,6 +56,12 @@ spring:
 log:
   path: ./logs
   level: debug
+
+# 上传文件
+upload:
+  avatar-dir: /upload
+  # 2 * 1024 * 1024
+  avatar-max-size: 2097152
 
 # 日志文件配置---> 转向xml自定义配置
 #logging:

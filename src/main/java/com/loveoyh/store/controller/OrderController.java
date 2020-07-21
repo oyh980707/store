@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("api/orders")
 public class OrderController extends BaseController {
 	@Resource
 	private OrderService orderService;

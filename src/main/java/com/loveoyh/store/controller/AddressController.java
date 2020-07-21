@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("addresses")
+@RequestMapping("api/addresses")
 public class AddressController extends BaseController{
 	@Resource 
 	private AddressService addressService;

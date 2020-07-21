@@ -285,7 +285,7 @@
 			/** 展示用户购物车所有商品 */
 			function showCart(){
 				$.ajax({
-					"url":"/carts/",
+					"url":"/api/carts/",
 					"data":null,
 					"type":"get",
 					"dataType":"json",
@@ -315,7 +315,7 @@
 				let cart = $(target).parent().parent();
 				let cid = cart.data("cid");
 				$.ajax({
-					"url":"/carts/"+cid+"/increase",
+					"url":"/api/carts/"+cid+"/increase",
 					"data":null,
 					"type":"POST",
 					"dataType":"json",
@@ -339,7 +339,7 @@
 				let cart = $(target).parent().parent();
 				let cid = cart.data("cid");
 				$.ajax({
-					"url":"/carts/"+cid+"/reduce",
+					"url":"/api/carts/"+cid+"/reduce",
 					"data":null,
 					"type":"POST",
 					"dataType":"json",

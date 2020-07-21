@@ -286,7 +286,7 @@
 		/** 展示用户收货地址信息 */
 		function showUserInfo(){
 			$.ajax({
-				"url":"/addresses/",
+				"url":"/api/addresses/",
 				"data":null,
 				"type":"get",
 				"dataType":"json",
@@ -313,7 +313,7 @@
 			let aBtn = e.target;
 			let aid = $(aBtn).parent().parent().data("aid");
 			$.ajax({
-				"url":"/addresses/"+aid+"/delete",
+				"url":"/api/addresses/"+aid+"/delete",
 				"data":null,
 				"type":"POST",
 				"dataType":"json",
@@ -333,7 +333,7 @@
 			let aBtn = e.target;
 			let aid = $(aBtn).parent().parent().data("aid");
 			$.ajax({
-				"url":"/addresses/"+aid+"/set_default",
+				"url":"/api/addresses/"+aid+"/set_default",
 				"data":null,
 				"type":"POST",
 				"dataType":"json",

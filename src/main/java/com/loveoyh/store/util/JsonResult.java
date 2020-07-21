@@ -87,4 +87,17 @@ public class JsonResult {
 		this.data = data;
 	}
 	
+	@Override
+	public String toString() {
+		if(null == data){
+			return "JsonResult{" +
+					"state=" + state +
+					", message='" + message + "}";
+		}
+		return "JsonResult{" +
+				"state=" + state +
+				", message='" + message + '\'' +
+				", data=" + data!=null?data.toString():"" +
+				'}';
+	}
 }

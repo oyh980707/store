@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
-@RequestMapping("carts")
+@RequestMapping("api/carts")
 public class CartController extends BaseController {
 	
 	@Resource

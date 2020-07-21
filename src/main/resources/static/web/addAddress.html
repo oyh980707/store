@@ -313,7 +313,7 @@
 				return;
 			}
 			$.ajax({
-				"url":"/districts/",
+				"url":"/api/districts/",
 				"data":"parent="+cityCode,
 				"type":"get",
 				"dataType":"json",
@@ -337,7 +337,7 @@
 				return;
 			}
 			$.ajax({
-				"url":"/districts/",
+				"url":"/api/districts/",
 				"data":"parent="+provinceCode,
 				"type":"get",
 				"dataType":"json",
@@ -359,7 +359,7 @@
 			$("#city-list").append("<option selected value=''>----请选择----</option>");
 			$("#area-list").append("<option selected value=''>----请选择----</option>");
 			$.ajax({
-				"url":"/districts/",
+				"url":"/api/districts/",
 				"data":"parent=86",
 				"type":"get",
 				"dataType":"json",
@@ -379,7 +379,7 @@
 		/** 请求添加地址 */
 		function addAddress(){
 			$.ajax({
-				"url":"/addresses/addnew",
+				"url":"/api/addresses/addnew",
 				"data":$("#form-addnew").serialize(),
 				"type":"post",
 				"dataType":"json",

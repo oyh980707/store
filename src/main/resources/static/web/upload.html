@@ -255,7 +255,7 @@
 			//修改头像请求
 			$("#btn-change-avatar").click(function(){
 				$.ajax({
-					"url":"/users/change_avatar",
+					"url":"/api/users/change_avatar",
 					"data":new FormData($("#form-change-avatar")[0]),
 					"type":"post",
 					"dataType":"json",

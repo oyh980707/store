@@ -270,7 +270,7 @@
 			
 			$("#btn-change-info").click(function(){
 				$.ajax({
-					"url":"/users/change_password",
+					"url":"/api/users/change_password",
 					"data":$("#form-change-password").serialize(),
 					"type":"post",
 					"dataType":"json",
@@ -296,7 +296,7 @@
 		
 		function showUserInfo(){
 			$.ajax({
-				"url":"/users/get_info",
+				"url":"/api/users/get_info",
 				"data":null,
 				"type":"get",
 				"dataType":"json",

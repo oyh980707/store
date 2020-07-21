@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("districts")
+@RequestMapping("api/districts")
 public class DistrictController extends BaseController {
 	
 	@Resource

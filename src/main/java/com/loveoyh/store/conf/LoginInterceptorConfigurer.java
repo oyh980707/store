@@ -30,10 +30,10 @@ public class LoginInterceptorConfigurer implements WebMvcConfigurer {
 		excludePaths.add("/web/index.html");
 		excludePaths.add("/web/product.html");
 		
-		excludePaths.add("/users/login");
-		excludePaths.add("/users/reg");
-		excludePaths.add("/districts/");
-		excludePaths.add("/goods/**");
+		excludePaths.add("/api/users/login");
+		excludePaths.add("/api/users/reg");
+		excludePaths.add("/api/districts/");
+		excludePaths.add("/api/goods/**");
 		
 		registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
 	}

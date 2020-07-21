@@ -149,19 +149,18 @@
 		$(document).ready(function(){
 			$("#btn-login").click(function(){
 				$.ajax({
-					"url":"/users/login",
+					"url":"/api/users/login",
 					"data":$("#form-login").serialize(),
 					"type":"post",
 					"dataType":"json",
 					"success":function(data){
 						if(data.state == 0){
-							alert("登录成功！");
-							console.log(data)
 							//将相关的数据保存到Cookie中
 							$.cookie("avatar", data.data.avatar , {
 								expires: 7
 							});
 							//跳转页面
+							location.href = "/web/index.html";
 						} else {
 							alert(data.message);
 						}

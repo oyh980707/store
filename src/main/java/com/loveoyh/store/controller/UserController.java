@@ -20,17 +20,17 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/users")
 public class UserController extends BaseController{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	/** 上传允许的头像类型 */
 	public static final List<String> AVATAR_CONTENT_TYPE = new ArrayList<String>();
 	/** 上传头像的最大大小 */
-	@Value("upload.avatar-max-size")
+	@Value("${upload.avatar-max-size}")
 	public String avatarMaxSize;
 	/** 上传头像的目录位置 */
-	@Value("upload.avatar-dir")
+	@Value("${upload.avatar-dir}")
 	public String avatarDir;
 	
 	static {
@@ -85,7 +85,7 @@ public class UserController extends BaseController{
 		user.setUsername(username);
 		
 		userService.changeInfo(user);
-		
+
 		return JsonResult.newInstance();
 	}
 	
@@ -109,9 +109,12 @@ public class UserController extends BaseController{
 		
 		//确定文件夹
 		String dirPath = request.getServletContext().getRealPath(avatarDir);
-		File dir = new File(dirPath);
+		File dir = new File(avatarDir);
 		if(!dir.exists()) {
-			dir.mkdirs();
+			dir = new File(dirPath);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
 		}
 		//确定文件名
 		String originalFilename = file.getOriginalFilename();

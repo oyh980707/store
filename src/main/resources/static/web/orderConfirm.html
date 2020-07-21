@@ -265,7 +265,7 @@
 		/** 展示用户收货地址信息 */
 		function showAddressList(){
 			$.ajax({
-				"url":"/addresses/",
+				"url":"/api/addresses/",
 				"data":null,
 				"type":"get",
 				"dataType":"json",
@@ -290,7 +290,7 @@
 		/** 展示用户购物车勾选结算商品 */
 		function showCart(){
 			$.ajax({
-				"url":"/carts/get_by_cids",
+				"url":"/api/carts/get_by_cids",
 				"data":location.search.substr(1),
 				"type":"get",
 				"dataType":"json",

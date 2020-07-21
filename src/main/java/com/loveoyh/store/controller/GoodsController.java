@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("goods")
+@RequestMapping("api/goods")
 public class GoodsController extends BaseController {
 	
 	@Resource
