@@ -1,9 +1,9 @@
 package com.loveoyh.store.aop;
 
-import com.loveoyh.store.util.JsonResult;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -63,11 +63,11 @@ public class AccessLogAspect {
 		// 记录下请求内容
 		StringBuffer requestURL = request.getRequestURL();
 		String method = request.getMethod();
-		String remoteAddr = request.getRemoteAddr();
+		String remoteHost = getRemoteHost(request);
 		String classMethod = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
 		String param = Arrays.toString(joinPoint.getArgs()).replaceAll("\\[|\\]","");
 		LOGGER.info("{}({}),URL[{}],HTTP_METHOD[{}],IP[{}]"
-				, classMethod, param, requestURL, method, remoteAddr);
+				, classMethod, param, requestURL, method, remoteHost);
 		
 		//目标业务方法
 		Object obj = joinPoint.proceed();
@@ -117,6 +117,26 @@ public class AccessLogAspect {
 		LOGGER.info("{} SPEND TIME ==> {} ms", classMethod, System.currentTimeMillis() - startTime);
 		
 		return obj;
+	}
+	
+	/**
+	 * 获取目标主机的ip
+	 *
+	 * @param request
+	 * @return
+	 */
+	private String getRemoteHost(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
 	}
 	
 }

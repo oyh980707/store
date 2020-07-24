@@ -24,31 +24,10 @@ upload:
   # 2 * 1024 * 1024
   avatar-max-size: 2097152
 
-
-# 生产环境
----
-spring:
-  profiles:
-    active: prod
-  datasource:
-    url: jdbc:mysql://localhost:3306/oyh_store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 980707
-log:
-  path: /usr/local/logs
-  level: debug
-
-# 上传文件
-upload:
-  avatar-dir: /usr/local/developtools/nginx/html
-  # 2 * 1024 * 1024
-  avatar-max-size: 2097152
-
 # 开发环境
 ---
 spring:
-  profiles:
-    active: dev
+  profiles: dev
   datasource:
     url: jdbc:mysql://localhost:3306/oyh_store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
@@ -60,6 +39,24 @@ log:
 # 上传文件
 upload:
   avatar-dir: /upload
+  # 2 * 1024 * 1024
+  avatar-max-size: 2097152
+
+# 生产环境
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/oyh_store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 980707
+log:
+  path: /usr/local/logs
+  level: debug
+
+# 上传文件
+upload:
+  avatar-dir: /usr/local/developtools/nginx/html
   # 2 * 1024 * 1024
   avatar-max-size: 2097152
 
