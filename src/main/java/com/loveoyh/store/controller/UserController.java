@@ -1,7 +1,11 @@
 package com.loveoyh.store.controller;
 
-import com.loveoyh.store.controller.ex.*;
+import com.jcraft.jsch.SftpException;
+import com.loveoyh.store.controller.ex.FileEmptyException;
+import com.loveoyh.store.controller.ex.FileSizeException;
+import com.loveoyh.store.controller.ex.FileTypeException;
 import com.loveoyh.store.entity.User;
+import com.loveoyh.store.service.FileService;
 import com.loveoyh.store.service.UserService;
 import com.loveoyh.store.util.JsonResult;
 import org.slf4j.Logger;
@@ -13,25 +17,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/users")
 public class UserController extends BaseController{
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	
 	/** 上传允许的头像类型 */
 	public static final List<String> AVATAR_CONTENT_TYPE = new ArrayList<String>();
 	/** 上传头像的最大大小 */
 	@Value("${upload.avatar-max-size}")
-	public String avatarMaxSize;
-	/** 上传头像的目录位置 */
-	@Value("${upload.avatar-dir}")
-	public String avatarDir;
+	private String avatarMaxSize;
+	@Autowired
+	private FileService fileService;
 	
 	static {
 		AVATAR_CONTENT_TYPE.add("image/jpeg");
@@ -90,7 +91,7 @@ public class UserController extends BaseController{
 	}
 	
 	@PostMapping("change_avatar")
-	public JsonResult changeAvatar(HttpServletRequest request,@RequestParam("file") MultipartFile file) {
+	public JsonResult changeAvatar(HttpServletRequest request,@RequestParam("file") MultipartFile file) throws IOException, SftpException {
 		//检查文件是否为空
 		if(file.isEmpty()) {
 			throw new FileEmptyException("文件为空!");
@@ -106,38 +107,8 @@ public class UserController extends BaseController{
 			throw new FileTypeException("请使用以下图片类型："+AVATAR_CONTENT_TYPE);
 		}
 		
-		
-		//确定文件夹
-		String dirPath = request.getServletContext().getRealPath(avatarDir);
-		File dir = new File(avatarDir);
-		if(!dir.exists()) {
-			dir = new File(dirPath);
-			if(!dir.exists()){
-				dir.mkdirs();
-			}
-		}
-		//确定文件名
-		String originalFilename = file.getOriginalFilename();
-		String suffix = "";
-		int beginIndex = originalFilename.lastIndexOf(".");
-		if(beginIndex != -1) {
-			suffix = originalFilename.substring(beginIndex);
-		}
-		String filename = UUID.randomUUID().toString() + suffix;
-		//执行保存
-		File dest = new File(dir,filename);
-		logger.debug("上传路径[{}]文件[{}]",dir,dest.getName());
-		try {
-			file.transferTo(dest);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-			throw new FileUploadStateException("文件传输错误!(状态)");
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new FileUploadIOException("文件传输中断!");
-		}
 		//更新数据表
-		String avatar = avatarDir +"/"+filename;
+		String avatar = this.fileService.uploadImage(file);
 		HttpSession session = request.getSession();
 		Integer uid = getUidFromSession(session);
 		String username = getUsernameFromSession(session);
