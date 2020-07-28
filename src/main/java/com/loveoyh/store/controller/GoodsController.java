@@ -1,7 +1,7 @@
 package com.loveoyh.store.controller;
 
 import com.loveoyh.store.service.GoodsService;
-import com.loveoyh.store.util.JsonResult;
+import com.loveoyh.store.entity.JsonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

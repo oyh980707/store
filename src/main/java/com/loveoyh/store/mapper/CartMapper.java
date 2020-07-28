@@ -59,4 +59,10 @@ public interface CartMapper {
 	 */
 	Integer updateNum(@Param("cid") Integer cid, @Param("num") Integer num, @Param("modifiedUser") String modifiedUser, @Param("modifiedTime") Date modifiedTime);
 	
+	/**
+	 * 根据id删除商品购物车
+	 * @param cid 购物车id
+	 * @return 受影响的行数
+	 */
+	int remove(Integer cid);
 }

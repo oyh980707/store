@@ -117,7 +117,12 @@
 		WHERE
 			cid=#{cid}
 	</update>
-	
-	
+
+	<!-- 根据id删除商品购物车 -->
+	<!-- int remove(Integer cid) -->
+	<delete id="remove">
+		delete from o_cart
+		where cid=#{cid}
+	</delete>
 	
 </mapper>

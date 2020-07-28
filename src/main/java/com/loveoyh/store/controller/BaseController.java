@@ -2,7 +2,7 @@ package com.loveoyh.store.controller;
 
 import com.loveoyh.store.controller.ex.*;
 import com.loveoyh.store.service.ex.*;
-import com.loveoyh.store.util.JsonResult;
+import com.loveoyh.store.entity.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpSession;

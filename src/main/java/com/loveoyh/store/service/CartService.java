@@ -64,4 +64,11 @@ public interface CartService {
 	 */
 	List<CartVO> getByCids(Integer[] cids, Integer uid);
 	
+	/**
+	 * 删除指定的购物车商品
+	 * @param cids 多个购物车数据id
+	 * @param uid 用户id
+	 * @return
+	 */
+	Integer delete(Integer[] cids, Integer uid);
 }

@@ -2,7 +2,7 @@ package com.loveoyh.store.controller;
 
 import com.loveoyh.store.entity.Address;
 import com.loveoyh.store.service.AddressService;
-import com.loveoyh.store.util.JsonResult;
+import com.loveoyh.store.entity.JsonResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -7,7 +7,7 @@ import com.loveoyh.store.controller.ex.FileTypeException;
 import com.loveoyh.store.entity.User;
 import com.loveoyh.store.service.FileService;
 import com.loveoyh.store.service.UserService;
-import com.loveoyh.store.util.JsonResult;
+import com.loveoyh.store.entity.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

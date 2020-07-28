@@ -2,7 +2,7 @@ package com.loveoyh.store.controller;
 
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.service.OrderService;
-import com.loveoyh.store.util.JsonResult;
+import com.loveoyh.store.entity.JsonResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

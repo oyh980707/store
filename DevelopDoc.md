@@ -356,7 +356,7 @@
 
 在编写处理请求的控制器及方法之前，还应该对异常进行统一处理！
 
-首先，需要创建响应结果的数据类型`com.loveoyh.store.util.JsonResult`：
+首先，需要创建响应结果的数据类型`com.loveoyh.store.entity.JsonResult`：
 
 	/**
 	 * 向客户端响应操作结果的数据类型

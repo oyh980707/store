@@ -3,11 +3,8 @@ package com.loveoyh.store.controller;
 import com.loveoyh.store.entity.Cart;
 import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.service.CartService;
-import com.loveoyh.store.util.JsonResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.loveoyh.store.entity.JsonResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -79,5 +76,14 @@ public class CartController extends BaseController {
 		return JsonResult.newInstance(num);
 	}
 	
+	@RequestMapping("delete")
+	public JsonResult delete(@RequestBody Integer[] cid, HttpSession session){
+		// 从Session中获取username
+		Integer uid = getUidFromSession(session);
+		
+		Integer num = this.cartService.delete(cid, uid);
+		
+		return JsonResult.newInstance(num);
+	}
 	
 }

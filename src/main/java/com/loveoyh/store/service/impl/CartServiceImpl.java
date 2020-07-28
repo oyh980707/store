@@ -9,11 +9,14 @@ import com.loveoyh.store.service.ex.CartNotFoundException;
 import com.loveoyh.store.service.ex.InsertException;
 import com.loveoyh.store.service.ex.UpdateException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 购物车业务层
  * @author oyh
@@ -85,6 +88,31 @@ public class CartServiceImpl implements CartService{
 			}
 		}
 		return results;
+	}
+	
+	/**
+	 * 删除商品购物车的业务流程:
+	 * 1. 查询数据
+	 * 2. 校验用户与购物车所属是否匹配 匹配则删除，不匹配则不删除
+	 * 3. 返回删除的结果
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Integer delete(Integer[] cids, Integer uid) {
+		List<CartVO> results = findByCids(cids);
+		
+		AtomicInteger counter = new AtomicInteger();
+		results.stream().forEach(cartVO -> {
+			if(cartVO.getUid() == uid) {
+				int num = this.cartMapper.remove(cartVO.getCid());
+				if(num < 1){
+					throw new RuntimeException("删除失败");
+				}
+				counter.addAndGet(num);
+			}
+		});
+		
+		return counter.get();
 	}
 	
 	

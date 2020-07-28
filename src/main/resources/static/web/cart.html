@@ -241,7 +241,7 @@
 									<p>关于我们</p>
 								</a>
 							</li>
-							<li><a href="#">关于达内</a></li>
+							<li><a href="#">关于我们</a></li>
 							<li><a href="#">联系我们</a></li>
 							<li>
 								<span class="fa fa-wechat"></span>
@@ -263,7 +263,7 @@
 			</div>
 			<!-- 页面底部-备案号 #footer -->
 			<div class="col-md-12 text-center bottom">
-				Copyright © 2018 Tedu.cn All Rights Reserved 京ICP备08000853号-56 <a target="_blank" style="font-size: 12px" href="http://www.tedu.cn/">达内时代科技集团有限公司</a> 版权所有
+				Copyright © 2018 Tedu.cn All Rights Reserved 京ICP备08000853号-56 <a target="_blank" style="font-size: 12px" href="http://www.tedu.cn/">我们时代科技集团有限公司</a> 版权所有
 			</div>
 		</footer>
 		<!--页脚结束-->
@@ -280,6 +280,7 @@
 				//绑定加减数量
 				$("#cart-list").on("click",".add-num",increase);
 				$("#cart-list").on("click",".reduce-num",reduce);
+				$("#cart-list").on("click",".cart-del",delCart);
 			});
 			
 			/** 展示用户购物车所有商品 */
@@ -355,7 +356,30 @@
 					}
 				});
 			}
-			
+
+			/** 展示用户购物车所有商品 */
+			function delCart(e){
+				var event = e || window.event;
+				var target = event.target || event.srcElement;
+				let cart = $(target).parent().parent();
+				let cid = cart.data("cid");
+				$.ajax({
+					"url":"/api/carts/delete",
+					"data":JSON.stringify([cid]),
+					"type":"post",
+					"dataType":"json",
+					"contentType":"application/json",
+					"success":function(data){
+						// 刷新页面
+						location.reload();
+					},
+					"error":function(){
+						alert("fail to delete");
+					}
+				});
+			}
+
+
 			/** 购物车模板 */
 			let cartTemplate = '<tr>'
 								+'<td>'
