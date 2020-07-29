@@ -3,6 +3,23 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="com.loveoyh.store.mapper.OrderMapper">
+	
+	<resultMap id="orderResultMap" type="com.loveoyh.store.entity.Order">
+		<id property="oid" column="oid"></id>
+		<result property="uid" column="uid"></result>
+		<result property="recvName" column="recv_name"></result>
+		<result property="recvPhone" column="recv_phone"></result>
+		<result property="recvAddress" column="recv_address"></result>
+		<result property="totalPrice" column="total_price"></result>
+		<result property="state" column="state"></result>
+		<result property="orderTime" column="order_time"></result>
+		<result property="payTime" column="pay_time"></result>
+		<result property="createdUser" column="created_user"></result>
+		<result property="createdTime" column="created_time"></result>
+		<result property="modifiedUser" column="modified_user"></result>
+		<result property="modifiedTime" column="modified_time"></result>
+	</resultMap>
+	
 	<!-- 插入订单数据 -->
 	<!-- Integer insertOrder(Order order) -->
 	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="oid">
@@ -40,5 +57,15 @@
 			#{modifiedUser}, #{modifiedTime}
 		)
 	</insert>
-	
+
+	<!-- 通过用户id查询所有订单 -->
+	<!-- List<Order> queryByUid(Integer uid) -->
+	<select id="queryByUid" resultMap="orderResultMap">
+		select
+			oid,uid,recv_name,recv_phone,recv_address,total_price,state,order_time,pay_time,created_user
+			,created_time,modified_user,modified_time
+		from o_order
+		where uid=#{uid}
+	</select>
+
 </mapper>

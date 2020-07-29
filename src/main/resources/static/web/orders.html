@@ -128,7 +128,7 @@
 				</div>
 			</div>
 			<!--左侧导航结束-->
-			<div class="col-md-10">
+			<div id="order-list" class="col-md-10">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<p class="panel-title">
@@ -325,5 +325,98 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
+
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				"url":"/api/orders/list",
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					if(data.state == 0){
+						let orders = data.data;
+
+						$("#order-list").empty();
+						console.log(data);
+						for (var i = 0; i < orders.length; i++) {
+							let order = orderTemplate.replace(/\[orderNumber\]/g, orders[i].oid);
+							order = order.replace(/\[orderTime\]/g, orders[i].orderTime);
+							order = order.replace(/\[recvName\]/g, orders[i].recvName);
+							// order-item
+							let orderItems = orders[i].orderItems;
+							let orderItemTemp = "";
+							let orderPrice = 0;
+							for (var j = 0; j < orderItems.length; j++) {
+								let orderItem = orderItemTemplate.replace(/\[title\]/g, orderItems[j].title);
+								orderItem = orderItem.replace(/\[price\]/g, orderItems[j].price);
+								orderItem = orderItem.replace(/\[imageUrl\]/g, orderItems[j].image);
+								orderItem = orderItem.replace(/\[num\]/g, orderItems[j].num);
+								let orderItemPrice = orderItems[j].price * orderItems[j].num;
+								orderItem = orderItem.replace(/\[totalPrice\]/g, orderItemPrice);
+								orderItemTemp += orderItem;
+								orderPrice += orderItemPrice;
+							}
+							order = order.replace(/\[orderItems\]/g, orderItemTemp);
+							order = order.replace(/\[orderPrice\]/g, orderPrice);
+							order = $(order);
+							order.data("oid",orders[i].oid);
+							$("#order-list").append(order);
+						}
+					} else {
+						alert(data.message);
+					}
+				},
+				"error":function(){
+					alert("您的登录信息已经过期！请重新登录！");
+				}
+			});
+		});
+
+		let orderTemplate =
+				'<div class="panel panel-default">' +
+					'<div class="panel-heading">' +
+						'<p class="panel-title">' +
+						'订单号：[orderNumber]，下单时间：[orderTime] ，收货人：[recvName]' +
+						'</p>' +
+					'</div>' +
+					'<div class="panel-body">' +
+						'<table class="orders-table" width="100%">' +
+							'<thead>' +
+								'<tr>' +
+								'<th width="15%"></th>' +
+								'<th width="30%">商品</th>' +
+								'<th width="8%">单价</th>' +
+								'<th width="8%">数量</th>' +
+								'<th width="9%">小计</th>' +
+								'<th width="10%">售后</th>' +
+								'<th width="10%">状态</th>' +
+								'<th width="10%">操作</th>' +
+								'</tr>' +
+							'</thead>' +
+							'<tbody class="orders-body">' +
+								'[orderItems]' +
+							'</tbody>' +
+						'</table>' +
+						'<div>' +
+							'<span class="pull-right">订单总金额：¥[orderPrice]</span>' +
+						'</div>' +
+					'</div>' +
+				'</div>';
+
+		let orderItemTemplate =
+				'<tr>' +
+					'<td><img src="[imageUrl]collect.png" class="img-responsive" /></td>' +
+					'<td>[title]</td>' +
+					'<td>¥<span>[price]</span></td>' +
+					'<td>[num]件</td>' +
+					'<td>¥<span>[totalPrice]</span></td>' +
+					'<td><a href="#">申请售后</a></td>' +
+					'<td>' +
+						'<div>已发货</div>' +
+						'<div><a href="orderInfo.html">订单详情</a></div>' +
+					'</td>' +
+					'<td><a href="#" class="btn btn-default btn-xs">确认收货</a></td>' +
+				'</tr>';
+	</script>
 
 </html>

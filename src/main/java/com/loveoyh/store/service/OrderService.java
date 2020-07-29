@@ -3,12 +3,15 @@ package com.loveoyh.store.service;
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.service.ex.InsertException;
 
+import java.util.List;
+
 /**
  * 处理订单数据接口
  * @author oyh
  *
  */
 public interface OrderService {
+	
 	/**
 	 * 创建订单
 	 * @param aid 地址id
@@ -19,4 +22,25 @@ public interface OrderService {
 	 * @throws InsertException
 	 */
 	Order create(Integer aid, Integer[] cids, Integer uid, String username) throws InsertException;
+	
+	/**
+	 * 通过用户id查询所有订单
+	 * @param uid
+	 * @return
+	 */
+	List<Order> queryByUid(Integer uid);
+	
+	/**
+	 * 转化额外属性
+	 * @param orders
+	 * @return
+	 */
+	List<Order> convertOrderList(List<Order> orders);
+	
+	/**
+	 * 转化额外属性
+	 * @param order
+	 * @return
+	 */
+	Order convertOrderList(Order order);
 }

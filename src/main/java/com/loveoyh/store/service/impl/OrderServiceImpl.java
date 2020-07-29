@@ -7,6 +7,7 @@ import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.mapper.OrderMapper;
 import com.loveoyh.store.service.AddressService;
 import com.loveoyh.store.service.CartService;
+import com.loveoyh.store.service.OrderItemService;
 import com.loveoyh.store.service.OrderService;
 import com.loveoyh.store.service.ex.InsertException;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Resource
 	private AddressService addressService;
+	
+	@Resource
+	private OrderItemService orderItemService;
 	
 	/**
 	 * 创建订单的业务流程：(事务操作)
@@ -93,6 +97,26 @@ public class OrderServiceImpl implements OrderService {
 		
 		// TODO 修改对应的商品的库存量
 		
+		return order;
+	}
+	
+	@Override
+	public List<Order> queryByUid(Integer uid) {
+		return this.orderMapper.queryByUid(uid);
+	}
+	
+	@Override
+	public List<Order> convertOrderList(List<Order> orders) {
+		orders.stream().forEach(this::convertOrderList);
+		return orders;
+	}
+	
+	@Override
+	public Order convertOrderList(Order order) {
+		List<OrderItem> orderItems = orderItemService.queryByOid(order.getOid());
+		if(null != orderItems && !orderItems.isEmpty()){
+			order.setOrderItems(orderItems);
+		}
 		return order;
 	}
 	

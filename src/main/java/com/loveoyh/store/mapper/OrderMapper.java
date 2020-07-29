@@ -3,6 +3,8 @@ package com.loveoyh.store.mapper;
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.entity.OrderItem;
 
+import java.util.List;
+
 /**
  * 处理订单数据接口
  * @author oyh
@@ -22,4 +24,12 @@ public interface OrderMapper {
 	 * @return 受影响的行数
 	 */
 	Integer insertOrderItem(OrderItem orderItem);
+	
+	/**
+	 * 根据用户id查询所有订单
+	 * @param uid 用户id
+	 * @return
+	 */
+	List<Order> queryByUid(Integer uid);
+	
 }
