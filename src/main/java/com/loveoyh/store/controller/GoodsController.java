@@ -21,6 +21,11 @@ public class GoodsController extends BaseController {
 		return JsonResult.newInstance(goodsService.getHotList());
 	}
 	
+	@GetMapping("/new")
+	public JsonResult getNewList(){
+		return JsonResult.newInstance(this.goodsService.getNewList());
+	}
+	
 	@GetMapping("{id}/details")
 	public JsonResult getById(@PathVariable("id") Long id){
 		return JsonResult.newInstance(goodsService.getById(id));

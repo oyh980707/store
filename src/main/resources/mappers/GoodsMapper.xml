@@ -35,5 +35,22 @@
 		WHERE
 			id=#{id}
 	</select>
-	
+
+	<!-- 查询最新商品 -->
+	<!-- List<Goods> findNewList() -->
+	<select id="findNewList" resultType="com.loveoyh.store.entity.Goods">
+		SELECT
+			id,
+			title,
+			price,
+			image
+		FROM
+			o_goods
+		WHERE
+			status=1 AND num>100
+		ORDER BY
+			created_time DESC
+		LIMIT 0,4
+	</select>
+
 </mapper>

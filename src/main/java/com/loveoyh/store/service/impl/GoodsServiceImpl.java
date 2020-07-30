@@ -34,7 +34,18 @@ public class GoodsServiceImpl implements GoodsService{
 	@Override
 	public Goods getById(Long id) {
 		return findById(id);
-	};
+	}
+	
+	@Override
+	public List<Goods> getNewList() {
+		return findNewList();
+	}
+	
+	private List<Goods> findNewList() {
+		return this.goodsMapper.findNewList();
+	}
+	
+	;
 	
 	private List<Goods> findHotList(){
 		return goodsMapper.findHotList();

@@ -149,7 +149,7 @@
 					<div class="panel-heading">
 						<p class="panel-title">新到好货</p>
 					</div>
-					<div class="panel-body panel-item">
+					<div id="new-list" class="panel-body panel-item">
 						<div class="col-md-12">
 							<div class="col-md-7 text-row-2"><a href="product.html">齐心（COMIX）C5902 A5优品商务笔记本子记事本日记本122张</a></div>
 							<div class="col-md-2">¥18</div>
@@ -293,6 +293,7 @@
 		$(document).ready(function(){
 			//显示热销商品
 			showHotGoodsList();
+			showNewGoodsList();
 		});
 		
 		/** 展示热销商品列表 */
@@ -313,6 +314,29 @@
 						goods = goods.replace('[id]',list[i].id);
 						goods = $(goods);
 						$("#hot-list").append(goods);
+					}
+				}
+			});
+		}
+
+		/** 展示最新商品列表 */
+		function showNewGoodsList() {
+			$.ajax({
+				"url":"/api/goods/new",
+				"data":null,
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					var list = data.data;
+
+					$("#new-list").empty();
+					for (var i = 0; i < list.length; i++) {
+						let goods = goodsTemplate.replace('[title]',list[i].title);
+						goods = goods.replace('[price]',list[i].price);
+						goods = goods.replace('[image]',list[i].image);
+						goods = goods.replace('[id]',list[i].id);
+						goods = $(goods);
+						$("#new-list").append(goods);
 					}
 				}
 			});

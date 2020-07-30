@@ -22,4 +22,10 @@ public interface GoodsMapper {
 	 * @return 商品数据对象
 	 */
 	Goods findById(Long id);
+	
+	/**
+	 * 获取最新商品列表
+	 * @return
+	 */
+	List<Goods> findNewList();
 }
