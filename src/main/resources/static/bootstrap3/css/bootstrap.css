@@ -2421,6 +2421,7 @@ input[type="month"].input-lg {
 }
 .radio,
 .checkbox {
+  float: left;
   position: relative;
   display: block;
   min-height: 20px;
@@ -2724,7 +2725,7 @@ select[multiple].input-lg {
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
   line-height: 1.42857143;
   text-align: center;
@@ -5957,6 +5958,13 @@ button.close {
   display: block;
   margin-right: auto;
   margin-left: auto;
+}
+.login-right{
+  font-size: 10px;
+  position: relative;
+  float: right !important;
+  top:8px;
+  left: 88px;
 }
 .pull-right {
   float: right !important;

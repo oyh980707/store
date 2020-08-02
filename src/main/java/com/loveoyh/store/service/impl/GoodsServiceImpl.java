@@ -4,6 +4,7 @@ import com.loveoyh.store.entity.Goods;
 import com.loveoyh.store.mapper.GoodsMapper;
 import com.loveoyh.store.service.GoodsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,6 +40,14 @@ public class GoodsServiceImpl implements GoodsService{
 	@Override
 	public List<Goods> getNewList() {
 		return findNewList();
+	}
+	
+	@Override
+	public int update(Goods goods) {
+		if(null == goods || StringUtils.isEmpty(goods.getId())) {
+			return 0;
+		}
+		return this.goodsMapper.update(goods);
 	}
 	
 	private List<Goods> findNewList() {

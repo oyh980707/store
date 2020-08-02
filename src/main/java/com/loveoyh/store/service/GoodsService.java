@@ -28,4 +28,11 @@ public interface GoodsService {
 	 * @return
 	 */
 	List<Goods> getNewList();
+	
+	/**
+	 * 更新商品信息
+	 * @param goods
+	 * @return
+	 */
+	int update(Goods goods);
 }

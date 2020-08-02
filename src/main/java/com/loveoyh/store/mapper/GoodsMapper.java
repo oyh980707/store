@@ -28,4 +28,11 @@ public interface GoodsMapper {
 	 * @return
 	 */
 	List<Goods> findNewList();
+	
+	/**
+	 * 更新商品信息
+	 * @param goods
+	 * @return
+	 */
+	int update(Goods goods);
 }

@@ -1,15 +1,15 @@
 package com.loveoyh.store.service.impl;
 
 import com.loveoyh.store.entity.Address;
+import com.loveoyh.store.entity.Goods;
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.entity.OrderItem;
 import com.loveoyh.store.entity.vo.CartVO;
 import com.loveoyh.store.mapper.OrderMapper;
-import com.loveoyh.store.service.AddressService;
-import com.loveoyh.store.service.CartService;
-import com.loveoyh.store.service.OrderItemService;
-import com.loveoyh.store.service.OrderService;
+import com.loveoyh.store.service.*;
+import com.loveoyh.store.service.ex.DeleteException;
 import com.loveoyh.store.service.ex.InsertException;
+import com.loveoyh.store.service.ex.UpdateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Resource
 	private OrderItemService orderItemService;
+	
+	@Resource
+	private GoodsService goodsService;
 	
 	/**
 	 * 创建订单的业务流程：(事务操作)
@@ -94,8 +97,23 @@ public class OrderServiceImpl implements OrderService {
 		}
 		
 		// TODO 删除购物车中对应的数据
+		Integer deleteRows = this.cartService.delete(cids, uid);
+		if(deleteRows < 1){
+			throw new DeleteException("删除购物车数据失败");
+		}
 		
 		// TODO 修改对应的商品的库存量
+		cartsList.stream().forEach(cart -> {
+			Goods old = this.goodsService.getById(cart.getGid());
+			Goods goods = new Goods();
+			goods.setId(cart.getGid());
+			goods.setNum(old.getNum()-cart.getNum());
+			int rows = this.goodsService.update(goods);
+			if(rows < 1){
+				throw new UpdateException("更新商品库存失败");
+			}
+		});
+		
 		
 		return order;
 	}

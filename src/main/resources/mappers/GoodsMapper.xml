@@ -3,7 +3,53 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="com.loveoyh.store.mapper.GoodsMapper">
-	<!-- 获取热销商品列表 -->
+
+	<!-- 更新商品信息 -->
+	<!-- int update(Goods goods) -->
+    <update id="update" parameterType="com.loveoyh.store.entity.Goods">
+		update o_goods
+		<set>
+			<if test="categoryId != null">
+				category_id = #{categoryId},
+			</if>
+			<if test="itemType != null and itemType != ''">
+				item_type = #{itemType},
+			</if>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="sellPoint != null and sellPoint != ''">
+				sell_point = #{sellPoint},
+			</if>
+			<if test="barcode != null and barcode != ''">
+				barcode = #{barcode},
+			</if>
+			<if test="image != null and image != ''">
+				image = #{image},
+			</if>
+			<if test="price != null">
+				price = #{price},
+			</if>
+			<if test="num != null">
+				num = #{num},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="priority != null">
+				priority = #{priority},
+			</if>
+			<if test="modifiedUser != null and modifiedUser != ''">
+                modified_user = #{modifiedUser},
+			</if>
+			<if test="modifiedTime != null and modifiedTime != ''">
+                modified_time = #{modifiedTime},
+			</if>
+		</set>
+		WHERE id = #{id};
+	</update>
+
+    <!-- 获取热销商品列表 -->
 	<!-- List<Goods> findHotList() -->
 	<select id="findHotList" resultType="com.loveoyh.store.entity.Goods">
 		SELECT
