@@ -111,7 +111,7 @@
 					</div>
 				</div>
 				<div class="col-md-12">
-					<form action="/api/orders/create" role="form">
+					<form id="ajax-form">
 						<div class="form-group">
 							<label for="name">
 								<p>选择收货地址：</p>
@@ -160,7 +160,7 @@
 						</div>
 						<div class="pay-bar">
 							<a href="cart.html">返回购物车</a>
-							<span class="pull-right"><input type="submit" value="在线支付" class="btn btn-primary btn-lg link-pay"/></span>
+							<span class="pull-right"><input id="order-submit" value="在线支付" class="btn btn-primary btn-lg"/></span>
 						</div>
 					</form>
 				</div>
@@ -260,6 +260,20 @@
 			
 			//显示购物车中勾选结算商品
 			showCart();
+
+			$("#order-submit").on("click",function () {    //表单提交时监听提交事件
+				$.ajax({
+					type: "POST",
+					url: "/api/orders/create",
+					data: $('#ajax-form').serialize(),
+					success: function(data) {
+						location.href = "/web/payment.html?oid="+data.data.oid;
+					},
+					error: function(request) {
+						alert("Connection error");
+					}
+				});
+			})
 		});
 		
 		/** 展示用户收货地址信息 */

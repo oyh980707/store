@@ -68,4 +68,14 @@
 		where uid=#{uid}
 	</select>
 
+	<!-- 通过id查询订单 -->
+	<!-- Order queryById(Long id) -->
+	<select id="queryById" resultMap="orderResultMap">
+		select
+			oid,uid,recv_name,recv_phone,recv_address,total_price,state,order_time,pay_time,created_user
+			,created_time,modified_user,modified_time
+		from o_order
+		where oid=#{id}
+	</select>
+
 </mapper>

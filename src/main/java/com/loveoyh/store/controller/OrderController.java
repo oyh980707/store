@@ -3,6 +3,7 @@ package com.loveoyh.store.controller;
 import com.loveoyh.store.entity.JsonResult;
 import com.loveoyh.store.entity.Order;
 import com.loveoyh.store.service.OrderService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,11 @@ public class OrderController extends BaseController {
 	public JsonResult list(HttpSession session){
 		List<Order> orders = this.orderService.queryByUid(getUidFromSession(session));
 		return JsonResult.newInstance(this.orderService.convertOrderList(orders));
+	}
+	
+	@RequestMapping("/{id}")
+	public JsonResult queryByid(@PathVariable("id") Long id){
+		return JsonResult.newInstance(this.orderService.queryById(id));
 	}
 	
 }

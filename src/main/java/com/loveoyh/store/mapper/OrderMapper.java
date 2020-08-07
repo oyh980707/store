@@ -32,4 +32,10 @@ public interface OrderMapper {
 	 */
 	List<Order> queryByUid(Integer uid);
 	
+	/**
+	 * 通过id查询订单
+	 * @param id
+	 * @return
+	 */
+	Order queryById(Long id);
 }

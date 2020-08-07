@@ -129,10 +129,10 @@
 								</label>
 							</div>
 						</div>
-						<div>订单号：1101000301，支付金额¥5298，收款方我们学子商城</div>
+						<div id="order-info">订单号：1101000301，支付金额¥5298，收款方我们学子商城</div>
 						<div class="pay-bar">
 							<a href="cart.html">返回购物车</a>
-							<span class="pull-right">¥5298.00 <input type="button" value="确认付款" class="btn btn-primary btn-lg link-success"/></span>
+							<span class="pull-right"><input type="button" value="确认付款" class="btn btn-primary btn-lg link-success"/></span>
 						</div>
 					</form>
 				</div>
@@ -224,5 +224,23 @@
 		</footer>
 		<!--页脚结束-->
 	</body>
+
+	<script>
+		$(document).ready(function() {
+			//显示用户收货地址信息
+			showOrder();
+		});
+
+		function showOrder(){
+			$.ajax({
+				"url":"/api/orders/"+location.search.substr(1).split("=")[1],
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					$("#order-info").text("订单号："+data.data.oid+"，支付金额¥"+data.data.totalPrice+"，收款方我们学子商城");
+				}
+			});
+		}
+	</script>
 
 </html>

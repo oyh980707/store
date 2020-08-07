@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 /**
  * 处理订单数据业务类
  * @author oyh
@@ -136,6 +138,14 @@ public class OrderServiceImpl implements OrderService {
 			order.setOrderItems(orderItems);
 		}
 		return order;
+	}
+	
+	@Override
+	public Order queryById(Long id) {
+		if(Objects.isNull(id)){
+			return null;
+		}
+		return this.orderMapper.queryById(id);
 	}
 	
 	/**

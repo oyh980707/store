@@ -43,4 +43,11 @@ public interface OrderService {
 	 * @return
 	 */
 	Order convertOrderList(Order order);
+	
+	/**
+	 * 通过id查询订单
+	 * @param id
+	 * @return
+	 */
+	Order queryById(Long id);
 }
