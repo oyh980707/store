@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setRecvName(address.getName());
 		order.setRecvPhone(address.getPhone());
 		order.setTotalPrice(totalPrice);
-		order.setState(0);//未支付
+		order.setState(0);
 		order.setOrderTime(now);
 		order.setPayTime(null);
 		order.setCreatedUser(username);
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		for (CartVO item : cartsList) {
 			OrderItem orderItem = new OrderItem();
-			orderItem.setOid(order.getOid());//插入操作Mybatis返回给Order对象的oid
+			orderItem.setOid(order.getOid());
 			orderItem.setGid(item.getGid());
 			orderItem.setTitle(item.getTitle());
 			orderItem.setImage(item.getImage());
@@ -98,13 +98,13 @@ public class OrderServiceImpl implements OrderService {
 			insertOrderItem(orderItem);
 		}
 		
-		// TODO 删除购物车中对应的数据
+		// 删除购物车中对应的数据
 		Integer deleteRows = this.cartService.delete(cids, uid);
 		if(deleteRows < 1){
 			throw new DeleteException("删除购物车数据失败");
 		}
 		
-		// TODO 修改对应的商品的库存量
+		// 修改对应的商品的库存量
 		cartsList.stream().forEach(cart -> {
 			Goods old = this.goodsService.getById(cart.getGid());
 			Goods goods = new Goods();
@@ -115,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
 				throw new UpdateException("更新商品库存失败");
 			}
 		});
-		
 		
 		return order;
 	}

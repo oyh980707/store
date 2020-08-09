@@ -137,7 +137,7 @@
 					</ul>
 					<div class="panel-body">
 						<!--修改资料表单开始-->
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" id="form-change-info" role="form">
 							<div class="form-group">
 								<label class="col-md-2 control-label">用户名：</label>
 								<div class="col-md-8">
@@ -270,8 +270,8 @@
 			
 			$("#btn-change-info").click(function(){
 				$.ajax({
-					"url":"/api/users/change_password",
-					"data":$("#form-change-password").serialize(),
+					"url":"/api/users/change_info",
+					"data":$("#form-change-info").serialize(),
 					"type":"post",
 					"dataType":"json",
 					"success":function(result){
