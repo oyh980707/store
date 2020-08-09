@@ -50,4 +50,11 @@ public interface OrderService {
 	 * @return
 	 */
 	Order queryById(Long id);
+	
+	/**
+	 * 支付成功对订单的处理
+	 * @param id
+	 * @return
+	 */
+	Order paySuccess(Long id);
 }

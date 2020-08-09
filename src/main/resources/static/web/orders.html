@@ -318,10 +318,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- 页面底部-备案号 #footer -->
-			<div class="col-md-12 text-center bottom">
-				Copyright © 2018 Tedu.cn All Rights Reserved 京ICP备08000853号-56 <a target="_blank" href="http://www.tedu.cn/">我们时代科技集团有限公司</a> 版权所有
-			</div>
+
 		</footer>
 		<!--页脚结束-->
 	</body>
@@ -340,12 +337,22 @@
 						console.log(data);
 						for (var i = 0; i < orders.length; i++) {
 							let order = orderTemplate.replace(/\[orderNumber\]/g, orders[i].oid);
-							order = order.replace(/\[orderTime\]/g, orders[i].orderTime);
+							order = order.replace(/\[orderTime\]/g, orders[i].time);
 							order = order.replace(/\[recvName\]/g, orders[i].recvName);
 							// order-item
 							let orderItems = orders[i].orderItems;
 							let orderItemTemp = "";
 							let orderPrice = 0;
+							let status = "";
+							if(orders[i].state == 0){
+								status = "未支付";
+							}
+							if(orders[i].state == 1){
+								status = "已支付";
+							}
+							if(orders[i].state == 2){
+								status = "已取消";
+							}
 							for (var j = 0; j < orderItems.length; j++) {
 								let orderItem = orderItemTemplate.replace(/\[title\]/g, orderItems[j].title);
 								orderItem = orderItem.replace(/\[price\]/g, orderItems[j].price);
@@ -353,6 +360,7 @@
 								orderItem = orderItem.replace(/\[num\]/g, orderItems[j].num);
 								let orderItemPrice = orderItems[j].price * orderItems[j].num;
 								orderItem = orderItem.replace(/\[totalPrice\]/g, orderItemPrice);
+								orderItem = orderItem.replace(/\[status\]/g, status);
 								orderItemTemp += orderItem;
 								orderPrice += orderItemPrice;
 							}
@@ -412,7 +420,7 @@
 					'<td>¥<span>[totalPrice]</span></td>' +
 					'<td><a href="#">申请售后</a></td>' +
 					'<td>' +
-						'<div>已发货</div>' +
+						'<div>[status]</div>' +
 						'<div><a href="orderInfo.html">订单详情</a></div>' +
 					'</td>' +
 					'<td><a href="#" class="btn btn-default btn-xs">确认收货</a></td>' +

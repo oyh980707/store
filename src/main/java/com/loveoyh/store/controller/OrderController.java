@@ -39,4 +39,9 @@ public class OrderController extends BaseController {
 		return JsonResult.newInstance(this.orderService.queryById(id));
 	}
 	
+	@RequestMapping("pay-success/{id}")
+	public JsonResult paySuccess(@PathVariable("id") Long id){
+		return JsonResult.newInstance(this.orderService.paySuccess(id));
+	}
+	
 }

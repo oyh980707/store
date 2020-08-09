@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -136,6 +137,8 @@ public class OrderServiceImpl implements OrderService {
 		if(null != orderItems && !orderItems.isEmpty()){
 			order.setOrderItems(orderItems);
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		order.setTime(sdf.format(order.getOrderTime()));
 		return order;
 	}
 	
@@ -145,6 +148,23 @@ public class OrderServiceImpl implements OrderService {
 			return null;
 		}
 		return this.orderMapper.queryById(id);
+	}
+	
+	@Override
+	public Order paySuccess(Long id) {
+		if(Objects.isNull(id)){
+			return null;
+		}
+		Order order = this.orderMapper.queryById(id);
+		if(null == order){
+			return null;
+		}
+		order.setState(1);
+		int rows = this.orderMapper.updateOrder(order);
+		if(rows < 1){
+			throw new UpdateException("更新失败");
+		}
+		return order;
 	}
 	
 	/**

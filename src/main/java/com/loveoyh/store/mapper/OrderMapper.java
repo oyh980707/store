@@ -38,4 +38,11 @@ public interface OrderMapper {
 	 * @return
 	 */
 	Order queryById(Long id);
+	
+	/**
+	 * 更新订单信息
+	 * @param order
+	 * @return
+	 */
+	int updateOrder(Order order);
 }

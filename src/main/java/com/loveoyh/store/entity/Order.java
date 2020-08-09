@@ -28,6 +28,7 @@ public class Order extends BaseEntity {
 	private Date payTime;
 	
 	// 冗余字段
-	List<OrderItem> orderItems;
+	private List<OrderItem> orderItems;
+	private String time;
 	
 }

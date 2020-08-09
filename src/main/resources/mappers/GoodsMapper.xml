@@ -39,10 +39,10 @@
 			<if test="priority != null">
 				priority = #{priority},
 			</if>
-			<if test="modifiedUser != null and modifiedUser != ''">
+			<if test="modifiedUser != null">
                 modified_user = #{modifiedUser},
 			</if>
-			<if test="modifiedTime != null and modifiedTime != ''">
+			<if test="modifiedTime != null">
                 modified_time = #{modifiedTime},
 			</if>
 		</set>
@@ -97,6 +97,23 @@
 		ORDER BY
 			created_time DESC
 		LIMIT 0,4
+	</select>
+
+	<!-- 通过title模糊查询 -->
+	<!-- List<Goods> findByTitle(String search) -->
+	<select id="findByTitle" resultType="com.loveoyh.store.entity.Goods">
+		SELECT
+			id,category_id as categoryId,item_type as itemType,title
+			,sell_point as sellPoint,price,num,barcode,image,status,priority
+			,created_user as createdUser,created_time as createdTime
+			,modified_user as modifiedUser,modified_time as modifiedTime
+		FROM
+			o_goods
+		WHERE
+			status=1 and title like concat('%',#{search},'%')
+		ORDER BY
+			created_time DESC
+		LIMIT 0,20
 	</select>
 
 </mapper>

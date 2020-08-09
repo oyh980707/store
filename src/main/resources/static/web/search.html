@@ -91,7 +91,7 @@
 		</div>
 		<!--头部结束-->
 		<!--导航结束-->
-		<div class="container">
+		<div id="search-result" class="container">
 			<div class="col-md-offset-1 col-md-10"><b>笔记本</b>&nbsp;<small>搜索结果：</small></div>
 			<div class="col-md-offset-1 col-md-10">
 				<div class="col-md-3">
@@ -231,7 +231,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-offset-1 col-md-10">
+			<!--<div class="col-md-offset-1 col-md-10">
 				<p align="center">
 					<a href="#">上一页</a>
 					<a href="#">1</a>
@@ -239,7 +239,7 @@
 					<a href="#">3</a>
 					<a href="#">下一页</a>
 				</p>
-			</div>
+			</div>-->
 		</div>
 		<!--页脚开始-->
 		<div class="clearfix"></div>
@@ -320,12 +320,92 @@
 					</div>
 				</div>
 			</div>
-			<!-- 页面底部-备案号 #footer -->
-			<div class="col-md-12 text-center bottom">
-				Copyright © 2018 Tedu.cn All Rights Reserved 京ICP备08000853号-56 <a target="_blank" href="http://www.tedu.cn/">我们时代科技集团有限公司</a> 版权所有
-			</div>
+
 		</footer>
 		<!--页脚结束-->
 	</body>
+
+	<script>
+		$(document).ready(function() {
+			//显示用户收货地址信息
+			showSearchResult();
+
+			/** 添加到购物车 */
+			$("#search-result").on("click", ".add-cart", function(e){
+				console.log(e.target);
+				let btn = $(e.target);
+				let id = btn.parent().parent().parent().data("id");
+				console.log(id);
+				$.ajax({
+					"url":"/api/carts/add_to_cart",
+					"data":{
+						"gid":id,
+						"num":1
+					},
+					"type":"POST",
+					"dataType":"json",
+					"success":function(data){
+						if(data.state == 0){
+							alert("添加成功！");
+						}
+					},
+					"error":function(){
+						alert("您尚未登录，或登录超时！")
+					}
+				});
+			});
+		});
+
+		function showSearchResult(){
+			$.ajax({
+				"url":"/api/goods/search",
+				"data":location.search.substr(1),
+				"type":"get",
+				"dataType":"json",
+				"success":function(data){
+					if(data.state == 0){
+						$("#search-result").empty();
+						let list = data.data;
+						console.log(list);
+						let keys = location.search.substr(1).split("=");
+						let key = "";
+						if(keys.length > 1){
+							key = decodeURI(keys[1]);
+						}
+						let tip = '<div class="col-md-offset-1 col-md-10"><b>'+key+'</b>&nbsp;<small>搜索结果：</small></div>'
+						$("#search-result").append(tip);
+
+						for (var i = 0; i < list.length/4; i++) {
+							let container = $('<div class="col-md-offset-1 col-md-10"></div>');
+							for(var j=0; j < 4 ; j++) {
+								let searchResult = searchTemplate.replace(/\[title\]/g, list[i*4+j].title);
+								searchResult = searchResult.replace(/\[imageUrl\]/g, list[i*4+j].image);
+								searchResult = searchResult.replace(/\[price\]/g, list[i*4+j].price);
+								searchResult = searchResult.replace(/\[id\]/g, list[i*4+j].id);
+								searchResult = $(searchResult);
+								searchResult.data("id", list[i*4+j].id);
+								container.append(searchResult);
+							}
+							$("#search-result").append(container);
+						}
+					} else {
+						alert(data.message);
+					}
+				}
+			});
+		}
+
+		let searchTemplate = '<div class="col-md-3">' +
+								'<div class="goods-panel">' +
+									'<img src="[imageUrl]collect.png" class="img-responsive" />' +
+									'<p>¥[price]</p>' +
+									'<p class="text-row-3"><a href="product.html?id=[id]"><small>[title]</small></a></p>' +
+									'<span>' +
+										'<a href="javascript:void(0)" class="btn btn-default btn-xs add-fav"><span class="fa fa-heart-o"></span>加入收藏</a>' +
+										'<a class="btn btn-default btn-xs add-cart"><span class="fa fa-cart-arrow-down"></span>加入购物车</a>' +
+									'</span>' +
+								'</div>' +
+							'</div>';
+	</script>
 
 </html>

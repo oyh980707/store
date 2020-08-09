@@ -50,6 +50,14 @@ public class GoodsServiceImpl implements GoodsService{
 		return this.goodsMapper.update(goods);
 	}
 	
+	@Override
+	public List<Goods> searchGoods(String search) {
+		if(null == search){
+			return null;
+		}
+		return this.goodsMapper.findByTitle(search);
+	}
+	
 	private List<Goods> findNewList() {
 		return this.goodsMapper.findNewList();
 	}

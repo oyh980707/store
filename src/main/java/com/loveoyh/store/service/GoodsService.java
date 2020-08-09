@@ -35,4 +35,11 @@ public interface GoodsService {
 	 * @return
 	 */
 	int update(Goods goods);
+	
+	/**
+	 * 通过关键字搜索标题匹配的商品
+	 * @param search
+	 * @return
+	 */
+	List<Goods> searchGoods(String search);
 }

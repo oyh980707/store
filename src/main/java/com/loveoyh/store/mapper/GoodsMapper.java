@@ -35,4 +35,11 @@ public interface GoodsMapper {
 	 * @return
 	 */
 	int update(Goods goods);
+	
+	/**
+	 * 通过title模糊查询
+	 * @param search
+	 * @return
+	 */
+	List<Goods> findByTitle(String search);
 }

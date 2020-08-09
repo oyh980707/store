@@ -132,7 +132,7 @@
 						<div id="order-info">订单号：1101000301，支付金额¥5298，收款方我们学子商城</div>
 						<div class="pay-bar">
 							<a href="cart.html">返回购物车</a>
-							<span class="pull-right"><input type="button" value="确认付款" class="btn btn-primary btn-lg link-success"/></span>
+							<span class="pull-right"><input id="pay-btn" type="button" value="确认付款" class="btn btn-primary btn-lg link-success"/></span>
 						</div>
 					</form>
 				</div>
@@ -217,10 +217,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- 页面底部-备案号 #footer -->
-			<div class="col-md-12 text-center bottom">
-				Copyright © 2018 Tedu.cn All Rights Reserved 京ICP备08000853号-56 <a target="_blank" href="http://www.tedu.cn/">我们时代科技集团有限公司</a> 版权所有
-			</div>
+
 		</footer>
 		<!--页脚结束-->
 	</body>
@@ -229,6 +226,20 @@
 		$(document).ready(function() {
 			//显示用户收货地址信息
 			showOrder();
+			
+			//支付
+			$("#pay-btn").on("click", function () {
+				$.ajax({
+					type: "POST",
+					url: "/api/orders/pay-success/"+location.search.substr(1).split("=")[1],
+					success: function(data) {
+						//
+					},
+					error: function(request) {
+						alert("Connection error");
+					}
+				});
+			})
 		});
 
 		function showOrder(){

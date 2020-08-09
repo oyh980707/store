@@ -58,6 +58,45 @@
 		)
 	</insert>
 
+	<!-- 修改订单信息 -->
+	<!-- int updateOrder(Order order) -->
+	<update id="updateOrder" parameterType="com.loveoyh.store.entity.Order">
+		update o_order
+		<set>
+			<if test="uid != null">
+				uid = #{uid},
+			</if>
+			<if test="recvName != null and recvName != ''">
+				recv_name = #{recvName},
+			</if>
+			<if test="recvPhone != null and recvPhone != ''">
+				recv_phone = #{recvPhone},
+			</if>
+			<if test="recvAddress != null and recvAddress != ''">
+				recv_address = #{recvAddress},
+			</if>
+			<if test="totalPrice != null">
+				total_price = #{totalPrice},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="orderTime != null">
+				order_time = #{orderTime},
+			</if>
+			<if test="payTime != null">
+				pay_time = #{payTime},
+			</if>
+			<if test="modifiedUser != null">
+				modified_user = #{modifiedUser},
+			</if>
+			<if test="modifiedTime != null">
+				modified_time = #{modifiedTime},
+			</if>
+		</set>
+		where oid = #{oid}
+	</update>
+
 	<!-- 通过用户id查询所有订单 -->
 	<!-- List<Order> queryByUid(Integer uid) -->
 	<select id="queryByUid" resultMap="orderResultMap">
@@ -66,6 +105,7 @@
 			,created_time,modified_user,modified_time
 		from o_order
 		where uid=#{uid}
+		order by order_time desc
 	</select>
 
 	<!-- 通过id查询订单 -->
